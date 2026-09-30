@@ -130,7 +130,27 @@ h1{margin:0;font-size:clamp(24px,4vw,40px)}
 .skill-choice-badge{display:inline-block;margin-left:6px;padding:2px 6px;border:1px solid #8b6938;border-radius:999px;color:#efcc7b;font-size:10px;vertical-align:1px}
 .skill-select{min-width:58px}
 .cd{color:#88c0f0;font-size:12px}
-.companion{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px;border:1px solid #493724;border-radius:9px;background:#15110e;margin-bottom:7px}
+.companion{display:block;padding:11px;border:1px solid #493724;border-radius:11px;background:#15110e;margin-bottom:9px}
+.companion.active-companion{border-color:#b58a45;box-shadow:0 0 0 1px #b58a4533 inset;background:linear-gradient(180deg,#21180f,#15110e)}
+.companion-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.companion-title{font-weight:900;color:#f0dfc1}
+.companion-role{font-size:11px;color:#ad9c84;margin-top:2px}
+.companion-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.friend-bar{height:7px;background:#0e0b09;border:1px solid #3c2d1f;border-radius:999px;overflow:hidden;margin:8px 0 4px}
+.friend-fill{height:100%;background:linear-gradient(90deg,#8060bf,#d6a8ff)}
+.companion-meta{font-size:11px;color:#bcae98;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.companion-skills{display:grid;gap:5px;margin-top:9px}
+.companion-skill{font-size:11px;line-height:1.4;padding:6px 7px;border:1px solid #3d3024;border-radius:7px;background:#110e0c;color:#9f927f}
+.companion-skill.unlocked{color:#ddd0bb;border-color:#5c472f}
+.companion-branch{margin-top:8px;padding:8px;border:1px solid #443456;border-radius:8px;background:#17111e}
+.companion-branch-title{font-size:11px;color:#cdb9e2;margin-bottom:6px;font-weight:800}
+.companion-branch-actions{display:flex;gap:6px;flex-wrap:wrap}
+.companion-branch-actions .btn.selected{border-color:#c69cf0;color:#e2c8ff;background:#2b1d39}
+.ultimate-meter{margin-top:8px;padding:7px 8px;border:1px solid #51402d;border-radius:8px;background:#100d0a}
+.ultimate-meter .row{font-size:11px;margin-bottom:4px}
+.ultimate-bar{height:6px;border-radius:999px;background:#211a13;overflow:hidden}
+.ultimate-fill{height:100%;background:linear-gradient(90deg,#c18b39,#ffe08a)}
+@media(max-width:600px){.companion-head{flex-direction:column}.companion-actions{justify-content:flex-start;width:100%}.companion-actions .btn{flex:1}}
 
 .soul-shop-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0 8px}
 .soul-shop-head b{color:#c99cf2}
@@ -321,6 +341,7 @@ img{-webkit-touch-callout:none}
       <div class="offline-reward-stat">⚔️ 예상 처치<b id="offlineRewardKills">0마리</b></div>
       <div class="offline-reward-stat">🪙 골드<b id="offlineRewardGold">0</b></div>
       <div class="offline-reward-stat">✨ 경험치<b id="offlineRewardXp">0</b></div>
+      <div class="offline-reward-stat">🤝 우정 EXP<b id="offlineRewardFriend">-</b></div>
     </div>
     <div class="offline-reward-note">최대 8시간 · 온라인 사냥 효율의 약 65% · 장비 드랍은 오프라인 보상에서 제외</div>
     <button type="button" id="offlineRewardClose" class="btn">보상 확인</button>
@@ -329,7 +350,7 @@ img{-webkit-touch-callout:none}
 <div id="startupError" style="display:none;position:fixed;left:12px;right:12px;top:12px;z-index:99999;padding:12px;border-radius:10px;background:#7b1e1e;color:#fff;font-weight:800"></div>
 <div class="wrap">
 <header>
-  <div><h1>🔥 Emberkeep</h1><div class="sub">멀티 클래스 · 48스킬 · 도감 · 환생 2.0 · 접이식 UI</div></div>
+  <div><h1>🔥 Emberkeep</h1><div class="sub">멀티 클래스 · 48스킬 · 동료 2.0 · 도감 · 환생 2.0</div></div>
   <div class="topstats">
     <div class="chip">🪙 <span id="gold">0</span></div>
     <div class="chip">💠 <span id="souls">0</span></div>
@@ -844,10 +865,46 @@ function setSummaryHtml(){
 }
 
 const companionDefs={
- archer:{name:"궁수 리아",icon:"🏹",unlock:15,base:18,desc:"빠른 원거리 공격"},
- mage:{name:"마법사 루엔",icon:"🔮",unlock:35,base:30,desc:"강한 마법 공격"},
- priest:{name:"사제 세라",icon:"💚",unlock:55,base:38,desc:"공격 + 주기적 회복"}
+ archer:{name:"궁수 리아",icon:"🏹",unlock:15,base:18,role:"연타 · 표식 · 보스딜",desc:"빠른 단일 사격으로 표식을 쌓는 보조 딜러",damage:.46,interval:1.05,
+   branches:{rapid:{name:"속사",desc:"공격속도와 더블 샷 강화"},sniper:{name:"저격",desc:"치명타와 보스 피해 강화"}}},
+ mage:{name:"마법사 루엔",icon:"🔮",unlock:35,base:30,role:"디버프 · 쿨다운 지원",desc:"적을 약화시키고 본캐 스킬 회전을 돕는 마도사",damage:.68,interval:1.38,
+   branches:{curse:{name:"저주",desc:"적 공격력·공격속도 감소"},arcane:{name:"비전",desc:"본캐 스킬 피해·쿨다운 강화"}}},
+ priest:{name:"사제 세라",icon:"💚",unlock:55,base:38,role:"회복 · 보호 · 버프",desc:"위기에서 회복과 보호막으로 전투를 지탱하는 사제",damage:.28,interval:1.62,
+   branches:{healing:{name:"치유",desc:"회복량과 회복 주기 강화"},blessing:{name:"축복",desc:"공격력·공속·치명타 버프 강화"}}}
 };
+function defaultCompanions(){
+  return {
+    archer:{owned:false,lv:0,xp:0,branch:null,ult:0},
+    mage:{owned:false,lv:0,xp:0,branch:null,ult:0},
+    priest:{owned:false,lv:0,xp:0,branch:null,ult:0}
+  };
+}
+function normalizeCompanions(){
+  const base=defaultCompanions(),old=state.companions&&typeof state.companions==="object"?state.companions:{};
+  state.companions={};
+  for(const id of Object.keys(companionDefs)){
+    const src=old[id]||{},owned=!!src.owned;
+    const branch=src.branch&&companionDefs[id].branches[src.branch]?src.branch:null;
+    state.companions[id]={owned,lv:owned?Math.max(1,Math.min(50,Number(src.lv)||1)):0,xp:owned?Math.max(0,Number(src.xp)||0):0,branch,ult:owned?Math.max(0,Math.min(100,Number(src.ult)||0)):0};
+  }
+  if(!state.activeCompanion||!state.companions[state.activeCompanion]?.owned){
+    state.activeCompanion=Object.keys(companionDefs).find(id=>state.companions[id].owned)||null;
+  }
+}
+function companionXpNeed(lv){return lv>=50?0:Math.floor(22*Math.pow(1.13,Math.max(0,lv-1))+lv*3);}
+function activeCompanionId(){const id=state.activeCompanion;return id&&state.companions?.[id]?.owned?id:null;}
+function activeCompanionState(){const id=activeCompanionId();return id?state.companions[id]:null;}
+function activeCompanionDef(){const id=activeCompanionId();return id?companionDefs[id]:null;}
+function companionBranchPower(id){const c=state.companions?.[id];return c?.branch&&c.lv>=20?c.branch:null;}
+function companionPassiveBonuses(){
+  const id=activeCompanionId(),c=activeCompanionState();
+  const b={skillDmg:0,cooldown:0,enemyAtkReduce:0,enemySpeedReduce:0};
+  if(!id||!c)return b;
+  const upgraded=c.lv>=40;
+  if(id==="mage"&&c.branch==="curse"){b.enemyAtkReduce=upgraded?.15:.10;b.enemySpeedReduce=upgraded?.15:.10;}
+  if(id==="mage"&&c.branch==="arcane"){b.skillDmg=upgraded?.15:.10;b.cooldown=upgraded?.12:.08;}
+  return b;
+}
 
 function defaultSkillChoices(){
   return {
@@ -892,12 +949,12 @@ function rebirthTitle(){
 }
 function baseState(){
   return {
-    version:10,gold:0,souls:0,rebirthCount:0,soulUpgrades:defaultSoulUpgrades(),codex:defaultCodex(),stage:1,maxStage:1,level:1,xp:0,xpNeed:20,
+    version:11,gold:0,souls:0,rebirthCount:0,soulUpgrades:defaultSoulUpgrades(),codex:defaultCodex(),stage:1,maxStage:1,level:1,xp:0,xpNeed:20,
     baseAtk:4,baseHp:40,baseSpeed:1,baseCrit:.05,
     up:{atk:0,hp:0,speed:0,crit:0},
     heroClass:"knight",classTiers:{knight:0,archer:0,mage:0,rogue:0},jobTier:0,hp:40,
     inventory:[],equipped:{weapon:null,armor:null,ring:null},itemSeq:1,
-    companions:{archer:{owned:false,lv:0},mage:{owned:false,lv:0},priest:{owned:false,lv:0}},
+    companions:defaultCompanions(),activeCompanion:null,
     skillsAuto:{},skillCd:{},skillChoices:defaultSkillChoices(),elitePity:emptyElitePity(),
     enemy:null,bossTime:30,bossPause:0,suspendedEncounter:null,event:null,eventDismissed:false,soundOn:true,lastSave:Date.now()
   };
@@ -962,6 +1019,9 @@ function heroStats(){
   if(heroEffectActive("windStep")){speed*=1.25;crit+=.08;}
   if(heroEffectActive("hawkEye")){speed*=1.25;crit+=.25;}
   if(heroEffectActive("shadowHaste")){speed*=1.25;crit+=.10;}
+  if(heroEffectActive("companionBlessing")){
+    const e=heroEffects.companionBlessing;atk*=1+(Number(e.atk)||0);speed*=1+(Number(e.speed)||0);crit+=Number(e.crit)||0;
+  }
   return {atk,hp,speed:Math.min(7.5,speed),crit:Math.min(.95,crit),boss:it.boss+sp.bossDmg,gold:it.gold+sb.goldAdd};
 }
 function combatPower(){
@@ -1038,6 +1098,8 @@ function refreshSoundButton(){const b=document.getElementById('soundBtn');if(!b)
 // Combat state is transient: saved games never contain unfinished animations.
 let encounterRevision=0, pendingHeroAttack=null, heroRecovery=0, enemyDefeatDelay=0, heroShield=0, heroShieldTime=0;
 let heroEffects={};
+let companionRuntime={actions:0,healCd:0,shieldCd:0,miracleCd:0};
+function resetCompanionRuntime(){companionRuntime={actions:0,healCd:0,shieldCd:0,miracleCd:Math.max(0,companionRuntime?.miracleCd||0)};}
 const effectTimers=new Set();
 function enemyEffects(enemy=state.enemy){
   if(!enemy)return null;
@@ -1082,6 +1144,11 @@ function heroOutgoingMultiplier(label="",enemy=state.enemy,opts={}){
   const cb=codexBonuses(),cm=codexEnemyBonuses(enemy),sp=specialBonuses();m*=1+cm.damage+(enemy?.boss?cb.bossDamage:0);
   if(label)m*=1+sp.skillDmg;
   if(enemy?.elite)m*=1+sp.eliteDmg;
+  const ally=companionPassiveBonuses();
+  if(label)m*=1+ally.skillDmg;
+  if(fx?.magicErosion?.time>0&&label)m*=1+(Number(fx.magicErosion.bonus)||.05);
+  if(fx?.allyMark?.time>0)m*=1+(Number(fx.allyMark.bonus)||.08);
+  if(fx?.allyVulnerability?.time>0)m*=1+(Number(fx.allyVulnerability.bonus)||.12);
   return m*(opts.damageMult||1);
 }
 function setLifestealFromDamage(damage){
@@ -1149,7 +1216,7 @@ function tickHeroEffects(dt){
 function tickEnemyEffects(dt){
   const enemy=state.enemy;if(!enemy||enemy.hp<=0)return;
   const fx=enemyEffects(enemy);
-  for(const key of ["mark","duelMark","frost","freeze"]){const e=fx[key];if(e&&typeof e==="object"&&e.time>0){e.time=Math.max(0,e.time-dt);if(e.time<=0)delete fx[key];}else if(typeof e==="number"&&e>0){fx[key]=Math.max(0,e-dt);}}
+  for(const key of ["mark","duelMark","frost","freeze","allyMark","magicErosion","allyVulnerability"]){const e=fx[key];if(e&&typeof e==="object"&&e.time>0){e.time=Math.max(0,e.time-dt);if(e.time<=0)delete fx[key];}else if(typeof e==="number"&&e>0){fx[key]=Math.max(0,e-dt);}}
   for(const key of ["arrowRain","burn","bleed","poisonArrow","flameWall"]){
     const d=fx[key];if(!d||d.time<=0)continue;
     d.time-=dt;d.tick-=dt;
@@ -1179,12 +1246,15 @@ function enemyStatusText(enemy=state.enemy){
   if(fx.bleed?.time>0)a.push(`🩸 출혈 ${Math.ceil(fx.bleed.time)}초`);
   if(fx.poisonArrow?.time>0)a.push(`🧪 독화살 ${Math.ceil(fx.poisonArrow.time)}초`);
   if(fx.poison?.time>0)a.push(`☠️ 독 ${fx.poison.stacks}중첩`);
+  if(fx.allyMark?.time>0)a.push(`🏹 사냥꾼 표식 ${Math.ceil(fx.allyMark.time)}초`);
+  if(fx.magicErosion?.time>0)a.push(`🔮 마력 침식 ${Math.ceil(fx.magicErosion.time)}초`);
+  if(fx.allyVulnerability?.time>0)a.push(`💠 마력 붕괴 ${Math.ceil(fx.allyVulnerability.time)}초`);
   if((fx.skipAttacks||0)>0)a.push(`💫 공격취소 ${fx.skipAttacks}회`);
   return a.join(" · ");
 }
 function heroStatusText(){
   const a=[];if(heroShield>0)a.push(`🛡️ ${Math.ceil(heroShield).toLocaleString()}`);
-  const names={warCry:"📯 함성",windStep:"🍃 바람",hawkEye:"🦅 매의 눈",shadowHaste:"🌘 가속",weakPoint:"👁️ 약점",magicAmp:"💠 증폭",killingIntent:"🔪 살의",holyOath:"🙏 맹세",blessedBlade:"🌟 축복검",immortalGuard:"🪽 불멸",kingsCounter:"🔱 반격",shadowClone:"👥 분신"};
+  const names={warCry:"📯 함성",windStep:"🍃 바람",hawkEye:"🦅 매의 눈",shadowHaste:"🌘 가속",weakPoint:"👁️ 약점",magicAmp:"💠 증폭",killingIntent:"🔪 살의",holyOath:"🙏 맹세",blessedBlade:"🌟 축복검",immortalGuard:"🪽 불멸",kingsCounter:"🔱 반격",shadowClone:"👥 분신",companionBlessing:"✨ 동료 축복"};
   for(const [k,n] of Object.entries(names))if(heroEffectActive(k))a.push(`${n} ${Math.ceil(heroEffects[k].time)}초`);
   return a.join(" · ");
 }
@@ -1206,7 +1276,7 @@ function cancelCombatPresentation(resetClocks=false){
   ['heroSprite','enemySprite'].forEach(id=>document.getElementById(id)?.classList.remove('hit','attacking'));
   document.getElementById('battlefield')?.classList.remove('shake');
   enemyAcc=0;
-  if(resetClocks){heroAcc=0;compAcc=0;priestAcc=0;}
+  if(resetClocks){heroAcc=0;compAcc=0;priestAcc=0;companionRuntime.actions=0;companionRuntime.healCd=0;companionRuntime.shieldCd=0;}
 }
 function pulse(id){
   const e=document.getElementById(id);if(!e)return;
@@ -1447,6 +1517,8 @@ function enemyAttack(){
   const enemy=state.enemy,fx=enemyEffects(enemy),sb=setBonuses();
   if((fx.skipAttacks||0)>0){fx.skipAttacks--;log("💫 적의 공격을 끊었다.");refreshLive(true);return;}
   let dmg=enemy.atk;
+  const companionPassives=companionPassiveBonuses();
+  dmg*=Math.max(.2,1-companionPassives.enemyAtkReduce);
   if(enemy.eliteKey==="berserker"&&enemy.hp/enemy.maxHp<.30)dmg*=1.25;
   if(heroEffectActive("holyOath"))dmg*=.80;
   const sp=specialBonuses(),hpRatio=state.hp/Math.max(1,heroStats().hp);
@@ -1458,7 +1530,9 @@ function enemyAttack(){
   let hpDamage=0;
   if(dmg>0){
     const wouldDie=state.hp-dmg<=0;
-    if(wouldDie&&heroEffectActive("immortalGuard")&&(heroEffects.immortalGuard.uses||0)>0){
+    if(wouldDie&&tryPriestMiracle()){
+      // 세라의 기적이 치명적 피해를 대신 막는다.
+    }else if(wouldDie&&heroEffectActive("immortalGuard")&&(heroEffects.immortalGuard.uses||0)>0){
       delete heroEffects.immortalGuard;state.hp=Math.max(1,heroStats().hp*.25);showDamageNumber(heroStats().hp*.25,false,"hero","heal");log("🪽 불멸의 수호 발동! 치명적 피해를 막았다.");
     }else{
       hpDamage=Math.min(state.hp,dmg);state.hp-=dmg;setHeroEffect("recentHit",4,{});pulse("heroSprite");showDamageNumber(dmg,false,"hero");playSfx("hurt");if(enemy.boss)shakeBattle();
@@ -1475,7 +1549,7 @@ function onDeath(){
   const lost=Math.min(state.gold,Math.floor(state.gold*.08));
   state.gold-=lost;
   const cp=Math.floor((state.stage-1)/10)*10+1, old=state.stage;
-  state.stage=cp; state.hp=heroStats().hp; clearHeroEffects(); state.suspendedEncounter=null; cancelCombatPresentation(true); spawnEnemy();
+  state.stage=cp; state.hp=heroStats().hp; clearHeroEffects(); resetCompanionRuntime(); state.suspendedEncounter=null; cancelCombatPresentation(true); spawnEnemy();
   log(`☠️ 전투불능. 골드 ${lost.toLocaleString()} 손실 · ${old} → ${cp} 스테이지 체크포인트 복귀`);
   requestRenderAll();
 }
@@ -1489,7 +1563,8 @@ function killEnemy(){
   const g=Math.floor(e.reward*(1+st.gold)*rewardMult()*goldExtra);
   const x=Math.floor(e.xp*xpSoulMult()*xpExtra);
   state.gold+=g; gainXp(x);
-  log(`✅ ${e.name} 처치 · 🪙${g.toLocaleString()} · EXP ${x.toLocaleString()}`);
+  const friendXp=gainCompanionXp(companionFriendXpForEnemy(e));
+  log(`✅ ${e.name} 처치 · 🪙${g.toLocaleString()} · EXP ${x.toLocaleString()}${friendXp?` · 🤝${friendXp}`:""}`);
   if(e.elite)maybeEliteSetDrop(e);
   maybeDrop(e);
   if(sb.killHeal>0){const heal=heroStats().hp*sb.killHeal;healHeroAmount(heal,"");}
@@ -1663,29 +1738,112 @@ function autoEquip(){
   renderFlags.gear=true; requestRenderAll(); saveGame(false);
 }
 
-function companionCost(id){
-  const c=state.companions[id]; return !c.owned ? companionDefs[id].base*15 : Math.floor(companionDefs[id].base*Math.pow(1.55,c.lv)*3);
-}
+function companionCost(id){return Math.floor((companionDefs[id]?.base||20)*15);}
 function buyCompanion(id){
-  const d=companionDefs[id], c=state.companions[id];
-  if(state.stage<d.unlock && state.maxStage<d.unlock) return;
-  const cost=companionCost(id); if(state.gold<cost) return;
-  state.gold-=cost;
-  if(!c.owned){ c.owned=true; c.lv=1; log(`${d.icon} ${d.name}이(가) 동료가 되었다!`);}
-  else{ c.lv++; log(`${d.icon} ${d.name} Lv.${c.lv}`);}
-  renderFlags.companions=true; requestRenderAll();
+  const d=companionDefs[id],c=state.companions[id];if(!d||!c||c.owned)return;
+  if(state.stage<d.unlock&&state.maxStage<d.unlock)return;
+  const cost=companionCost(id);if(state.gold<cost)return;
+  state.gold-=cost;c.owned=true;c.lv=1;c.xp=0;c.branch=null;c.ult=0;
+  if(!activeCompanionId())state.activeCompanion=id;
+  log(`${d.icon} ${d.name}이(가) 동료가 되었다! · 출전 동료로 설정`);
+  resetCompanionRuntime();renderFlags.companions=true;requestRenderAll();saveGame(false);
 }
-function companionDamage(id){
-  const c=state.companions[id]; if(!c.owned) return 0;
-  const mul={archer:.55,mage:.9,priest:.38}[id];
-  return heroStats().atk*mul*(1+c.lv*.16)*soulBonuses().companionMult;
+function setActiveCompanion(id){
+  if(!state.companions?.[id]?.owned||state.activeCompanion===id)return;
+  state.activeCompanion=id;compAcc=0;priestAcc=0;resetCompanionRuntime();
+  log(`${companionDefs[id].icon} ${companionDefs[id].name} 출전!`);renderFlags.companions=true;requestRenderAll();saveGame(false);
 }
-function companionsAttack(){
-  if(!state.enemy||state.enemy.hp<=0||(state.bossPause||0)>0) return;
-  let total=0; ["archer","mage","priest"].forEach(id=>total+=companionDamage(id));
-  if(total>0){const damage=Math.floor(total);state.enemy.hp=Math.max(0,state.enemy.hp-damage);showDamageNumber(damage,false,'enemy','companion-dmg');pulse('enemySprite');if(state.enemy.hp<=0){refundPendingSkill();enemyDefeatDelay=.24;}} 
+function selectCompanionBranch(id,branch){
+  const c=state.companions?.[id],d=companionDefs[id];if(!c?.owned||c.lv<20||!d?.branches?.[branch])return;
+  c.branch=branch;log(`${d.icon} ${d.name} 성장 분기 → ${d.branches[branch].name}`);renderFlags.companions=true;requestRenderAll();saveGame(false);
 }
-function priestHeal(){const c=state.companions.priest; if(c.owned) healHero((.05+c.lv*.002)*soulBonuses().companionMult);}
+function companionDamage(id,mult=1){
+  const c=state.companions?.[id],d=companionDefs[id];if(!c?.owned||!d)return 0;
+  let amount=heroStats().atk*d.damage*(1+Math.max(0,c.lv-1)*.035)*soulBonuses().companionMult*mult;
+  if(id==="archer"&&c.branch==="sniper"&&state.enemy?.boss)amount*=c.lv>=40?1.35:1.20;
+  return Math.max(1,amount);
+}
+function companionCritChance(id){
+  const c=state.companions?.[id];let chance=.06;
+  if(id==="archer")chance=.10+(c?.branch==="sniper"?(c.lv>=40?.25:.15):0);
+  return Math.min(.60,chance);
+}
+function dealCompanionDamage(id,mult=1,label=""){
+  if(!state.enemy||state.enemy.hp<=0)return 0;
+  const crit=Math.random()<companionCritChance(id),base=companionDamage(id,mult),damage=Math.max(1,Math.floor(base*(crit?1.7:1)));
+  const dealt=Math.min(state.enemy.hp,damage);state.enemy.hp=Math.max(0,state.enemy.hp-damage);
+  showDamageNumber(damage,crit,'enemy','companion-dmg');pulse('enemySprite');
+  if(label)log(`${companionDefs[id].icon} ${label} · ${dealt.toLocaleString()} 피해${crit?' · 치명타':''}`);
+  if(state.enemy.hp<=0){refundPendingSkill();enemyDefeatDelay=.24;}
+  return dealt;
+}
+function addCompanionUltimate(id,amount){const c=state.companions?.[id];if(!c?.owned)return;c.ult=Math.min(100,(Number(c.ult)||0)+amount);}
+function reduceHeroSkillCooldowns(amount){for(const id in state.skillCd)state.skillCd[id]=Math.max(0,(state.skillCd[id]||0)-amount);}
+function useCompanionUltimate(id){
+  const c=state.companions?.[id];if(!c||c.ult<100||!state.enemy||state.enemy.hp<=0)return false;c.ult=0;
+  if(id==="archer"){
+    dealCompanionDamage(id,6,"천공 저격");if(state.enemy?.hp>0)setEnemyTimed(state.enemy,"allyMark",8,{bonus:.10});
+    log("🏹 천공 저격 · 사냥꾼 표식 8초");
+  }else if(id==="mage"){
+    dealCompanionDamage(id,5.2,"마력 붕괴");if(state.enemy?.hp>0)setEnemyTimed(state.enemy,"allyVulnerability",8,{bonus:.12});
+    log("🔮 마력 붕괴 · 8초간 받는 피해 +12%");
+  }else if(id==="priest"){
+    healHeroAmount(heroStats().hp*.30,"신의 가호");applyHeroShield(.18,8,"신의 가호");setHeroEffect("companionBlessing",8,{atk:.15,speed:.10,crit:.05});
+    log("✨ 신의 가호 · 회복 + 보호막 + 전투 축복");
+  }
+  playSfx("ultimate");renderFlags.companions=true;return true;
+}
+function companionAttack(){
+  const id=activeCompanionId(),c=activeCompanionState();if(!id||!c||!state.enemy||state.enemy.hp<=0||(state.bossPause||0)>0)return;
+  companionRuntime.actions++;
+  if(id==="archer"){
+    dealCompanionDamage(id,1);
+    if(c.lv>=10){let p=.20;if(c.branch==="rapid")p+=c.lv>=40?.15:.10;if(Math.random()<p&&state.enemy?.hp>0)dealCompanionDamage(id,1,"더블 샷");}
+    if(c.lv>=30&&state.enemy?.hp>0&&Math.random()<.18){setEnemyTimed(state.enemy,"allyMark",6,{bonus:.08});}
+    if(c.lv>=50&&companionRuntime.actions%8===0&&state.enemy?.hp>0)dealCompanionDamage(id,2.5,"죽음의 화살");
+    addCompanionUltimate(id,8);
+  }else if(id==="mage"){
+    dealCompanionDamage(id,1);
+    if(c.lv>=10&&state.enemy?.hp>0)setEnemyTimed(state.enemy,"magicErosion",6,{bonus:.05});
+    if(c.lv>=30&&companionRuntime.actions%5===0){const amount=c.branch==="arcane"&&c.lv>=40?1.5:1;reduceHeroSkillCooldowns(amount);log(`⏳ 루엔의 시간 왜곡 · 스킬 쿨타임 ${amount}초 감소`);}
+    if(c.lv>=50&&companionRuntime.actions%6===0&&state.enemy?.hp>0){dealCompanionDamage(id,2.2,"마력 공명");setEnemyTimed(state.enemy,"magicErosion",8,{bonus:.08});}
+    addCompanionUltimate(id,8);
+  }else if(id==="priest"){
+    dealCompanionDamage(id,1);
+    addCompanionUltimate(id,6);
+  }
+  if(c.ult>=100)useCompanionUltimate(id);
+  renderFlags.companions=true;
+}
+function companionAttackInterval(){
+  const id=activeCompanionId(),c=activeCompanionState(),d=activeCompanionDef();if(!id||!c||!d)return Infinity;
+  let interval=d.interval;
+  if(id==="archer"&&c.branch==="rapid")interval/=c.lv>=40?1.35:1.20;
+  return Math.max(.45,interval);
+}
+function priestHealInterval(){
+  const c=state.companions?.priest;if(activeCompanionId()!=="priest"||!c?.owned)return Infinity;
+  if(c.branch==="healing")return c.lv>=40?3.5:4.2;return 5;
+}
+function priestHeal(){
+  const c=state.companions?.priest;if(activeCompanionId()!=="priest"||!c?.owned)return;
+  let ratio=.045+c.lv*.0011;if(c.branch==="healing")ratio*=c.lv>=40?1.8:1.5;
+  healHeroAmount(heroStats().hp*ratio,"세라의 치유");
+  if(c.lv>=10){let buff={atk:.06,speed:0,crit:0};if(c.branch==="blessing")buff=c.lv>=40?{atk:.16,speed:.10,crit:.05}:{atk:.10,speed:.06,crit:.02};setHeroEffect("companionBlessing",6,buff);}
+  if(c.lv>=30&&state.hp/Math.max(1,heroStats().hp)<=.40&&companionRuntime.shieldCd<=0){applyHeroShield(.14,7,"세라의 신성 보호막");companionRuntime.shieldCd=18;}
+  addCompanionUltimate("priest",10);if(c.ult>=100)useCompanionUltimate("priest");renderFlags.companions=true;
+}
+function tryPriestMiracle(){
+  const c=state.companions?.priest;if(activeCompanionId()!=="priest"||!c?.owned||c.lv<50||companionRuntime.miracleCd>0)return false;
+  companionRuntime.miracleCd=60;state.hp=Math.max(1,heroStats().hp*.20);showDamageNumber(heroStats().hp*.20,false,"hero","heal");log("✨ 세라의 기적! 치명적 피해를 막고 HP 20%로 생존했다.");return true;
+}
+function companionFriendXpForEnemy(e){return Math.max(2,Math.floor(Math.sqrt(Math.max(1,e?.xp||1))*1.4*(e?.boss?1.5:1)*(e?.elite?1.25:1)*(e?.golden?1.5:1)));}
+function gainCompanionXp(amount){
+  const id=activeCompanionId(),c=activeCompanionState();if(!id||!c||c.lv>=50||amount<=0)return 0;
+  const before=Number(c.xp)||0;c.xp+=Math.floor(amount);let gained=c.xp-before;
+  while(c.lv<50){const need=companionXpNeed(c.lv);if(c.xp<need)break;c.xp-=need;c.lv++;log(`${companionDefs[id].icon} ${companionDefs[id].name} 우정 레벨 업! Lv.${c.lv}`);if(c.lv===20)log(`🌿 ${companionDefs[id].name} 성장 분기를 선택할 수 있습니다.`);if(c.lv===50)log(`🌟 ${companionDefs[id].name} 최종 동료 스킬이 해금되었습니다.`);}
+  if(c.lv>=50)c.xp=0;renderFlags.companions=true;return gained;
+}
 
 function maybeEvent(){
   if(state.event||Math.random()>.075) return;
@@ -1763,7 +1921,7 @@ function rebirth(){
   if(!confirm(`환생하여 영혼 ${gain}개를 얻을까요? 진행도와 장비가 초기화되지만 소울 상점 강화와 도감은 유지됩니다.`)) return;
   const souls=state.souls+gain, keepClass=state.heroClass, keepChoices=JSON.parse(JSON.stringify(state.skillChoices||defaultSkillChoices()));
   const keepSoulUpgrades=Object.assign(defaultSoulUpgrades(),state.soulUpgrades||{}),keepCodex=JSON.parse(JSON.stringify(state.codex||defaultCodex())),rebirthCount=(Number(state.rebirthCount)||0)+1;
-  state=baseState(); clearHeroEffects(); state.souls=souls; state.rebirthCount=rebirthCount; state.soulUpgrades=keepSoulUpgrades; state.codex=keepCodex; normalizeCodex(); state.heroClass=keepClass; state.skillChoices=keepChoices; initSkillMaps(); state.hp=heroStats().hp; spawnEnemy();
+  state=baseState(); clearHeroEffects(); resetCompanionRuntime(); state.souls=souls; state.rebirthCount=rebirthCount; state.soulUpgrades=keepSoulUpgrades; state.codex=keepCodex; normalizeCodex(); state.heroClass=keepClass; state.skillChoices=keepChoices; initSkillMaps(); state.hp=heroStats().hp; spawnEnemy();
   log(`💠 환생 ${rebirthCount}회 완료! 영혼 ${gain}개 획득 · ${rebirthTitle()}`); renderFlags={gear:true,skills:true,companions:true}; requestRenderAll(); saveGame(false);
 }
 function buySoulUpgrade(id){
@@ -1904,6 +2062,7 @@ function showOfflineReward(result){
   document.getElementById("offlineRewardKills").textContent=`${result.kills.toLocaleString()}마리`;
   document.getElementById("offlineRewardGold").textContent=`${result.gold.toLocaleString()} G`;
   document.getElementById("offlineRewardXp").textContent=result.xp.toLocaleString();
+  const friend=document.getElementById("offlineRewardFriend");if(friend)friend.textContent=result.friendXp?`${result.friendXp.toLocaleString()} EXP`:"-";
   const sub=document.getElementById("offlineRewardSub");
   if(sub)sub.textContent=`스테이지 ${result.stage} 기준으로 모험을 계속했습니다.`;
   modal.classList.add("show");
@@ -1927,8 +2086,10 @@ function applyOfflineRewards(now=Date.now(),showPopup=true){
   const xp=Math.max(1,Math.floor(kills*mob.xp*xpSoulMult()*(1+cm.xp)));
   state.gold+=gold;
   gainXp(xp);
-  const result={seconds,kills,gold,xp,stage,capped:rawSeconds>OFFLINE_MAX_SECONDS};
-  log(`💤 오프라인 모험 ${formatOfflineDuration(seconds)} · 예상 ${kills.toLocaleString()}마리 · 🪙${gold.toLocaleString()} · EXP ${xp.toLocaleString()}${result.capped?' · 8시간 상한 적용':''}`);
+  let friendXp=0;
+  if(activeCompanionId())friendXp=gainCompanionXp(Math.floor(kills*companionFriendXpForEnemy(mob)*.75));
+  const result={seconds,kills,gold,xp,friendXp,stage,capped:rawSeconds>OFFLINE_MAX_SECONDS};
+  log(`💤 오프라인 모험 ${formatOfflineDuration(seconds)} · 예상 ${kills.toLocaleString()}마리 · 🪙${gold.toLocaleString()} · EXP ${xp.toLocaleString()}${friendXp?` · 🤝${friendXp.toLocaleString()}`:""}${result.capped?' · 8시간 상한 적용':''}`);
   requestRenderAll();
   if(showPopup)showOfflineReward(result);
   return result;
@@ -1964,7 +2125,7 @@ function migrateFromOld(o){
   }
   n.jobTier=n.classTiers[n.heroClass]||0; n.hp=o.hp||n.baseHp;
   n.inventory=o.inventory||[]; n.equipped=Object.assign({weapon:null,armor:null,ring:null},o.equipped||{});
-  n.itemSeq=o.itemSeq||1; n.companions=Object.assign(baseState().companions,o.companions||{});
+  n.itemSeq=o.itemSeq||1; n.companions=o.companions||defaultCompanions(); n.activeCompanion=o.activeCompanion||null;
   n.skillsAuto=Object.assign(n.skillsAuto,o.skillsAuto||{}); n.skillCd=Object.assign(n.skillCd,o.skillCd||{}); n.skillChoices=o.skillChoices||defaultSkillChoices();
   n.suspendedEncounter=o.suspendedEncounter||null; n.bossPause=Number(o.bossPause)||0;
   n.elitePity=Object.assign(emptyElitePity(),o.elitePity||{}); n.eventDismissed=o.eventDismissed||false; n.soundOn=o.soundOn!==false; n.lastSave=o.lastSave||Date.now(); return n;
@@ -1978,7 +2139,7 @@ function loadGame(){
       state=Object.assign(baseState(),o);
       state.up=Object.assign({atk:0,hp:0,speed:0,crit:0},state.up||{});
       state.equipped=Object.assign({weapon:null,armor:null,ring:null},state.equipped||{});
-      state.companions=Object.assign(baseState().companions,state.companions||{});
+      normalizeCompanions();
       state.elitePity=Object.assign(emptyElitePity(),state.elitePity||{});
       state.soulUpgrades=Object.assign(defaultSoulUpgrades(),state.soulUpgrades||{}); state.rebirthCount=Math.max(0,Number(state.rebirthCount)||0);
       normalizeCodex();backfillCodex();
@@ -1989,7 +2150,7 @@ function loadGame(){
       state.hp=Math.min(state.hp,heroStats().hp);
       renderFlags={gear:true,skills:true,companions:true};
       requestRenderAll();
-      log("💾 V8.3 저장 데이터를 불러왔다.");
+      log("💾 V8.4 저장 데이터를 불러왔다.");
       applyOfflineRewards(Date.now(),true);
       saveGame(false);
       return;
@@ -1998,6 +2159,7 @@ function loadGame(){
     }
   }
   state=baseState();
+  normalizeCompanions();
   initSkillMaps();
   state.hp=heroStats().hp;
   spawnEnemy();
@@ -2017,6 +2179,8 @@ function resetGame(){
   }catch(e){}
 
   state = baseState();
+  normalizeCompanions();
+  resetCompanionRuntime();
   clearHeroEffects();
   initSkillMaps();
   state.hp = heroStats().hp;
@@ -2158,21 +2322,33 @@ function refreshSkillStates(){
     if(select)select.disabled=!unlocked||selected;
   });
 }
+function companionSkillRows(id,c){
+  const rows=[];
+  const unlocks=id==="archer"?[
+    [1,"기본 사격","빠른 단일 사격"],[10,"더블 샷","20% 확률로 추가 사격"],[30,"사냥꾼의 표식","공격 시 표식 부여"],[50,"죽음의 화살","8회 공격마다 강력한 일격"]
+  ]:id==="mage"?[
+    [1,"마력탄","단일 마법 공격"],[10,"마력 침식","본캐 스킬 피해를 받기 쉬운 상태 부여"],[30,"시간 왜곡","5회 공격마다 본캐 스킬 쿨다운 감소"],[50,"마력 공명","6회 공격마다 추가 마법 피해와 강화된 침식"]
+  ]:[
+    [1,"성스러운 일격","약한 단일 공격"],[10,"축복","치유 시 본캐 공격 버프"],[30,"신성 보호막","저체력에서 자동 보호막"],[50,"기적","60초마다 치명적 피해 1회 방지"]
+  ];
+  for(const [lv,name,desc] of unlocks)rows.push(`<div class="companion-skill ${c.lv>=lv?'unlocked':''}">${c.lv>=lv?'✅':'🔒'} Lv.${lv} <b>${name}</b> · ${desc}</div>`);
+  return rows.join("");
+}
 function renderCompanions(){
-  document.getElementById("companions").innerHTML=Object.entries(companionDefs).map(([id,d])=>`<div class="companion" data-comp="${id}"><div><b>${d.icon} ${d.name}</b> <span class="small" id="comp-lv-${id}"></span><div class="small" id="comp-desc-${id}">${d.desc}</div></div><button type="button" class="btn comp-btn" data-id="${id}"></button></div>`).join("");
-  renderFlags.companions=false; refreshCompanionStates();
+  normalizeCompanions();
+  const active=activeCompanionId();
+  document.getElementById("companions").innerHTML=`<div class="notice" style="margin-bottom:9px"><b>🤝 동료 2.0</b><br>보유한 동료 중 <b>1명만 출전</b>합니다. 출전 동료만 우정 EXP와 궁극기 게이지를 얻습니다. Lv.20부터 성장 분기를 자유롭게 변경할 수 있습니다.</div>`+Object.entries(companionDefs).map(([id,d])=>{
+    const c=state.companions[id],unlock=state.stage>=d.unlock||state.maxStage>=d.unlock,isActive=active===id;
+    if(!c.owned){
+      const cost=companionCost(id);return `<div class="companion"><div class="companion-head"><div><div class="companion-title">${d.icon} ${d.name}</div><div class="companion-role">${d.role}</div></div><div class="companion-actions"><button type="button" class="btn comp-btn" data-id="${id}" ${!unlock||state.gold<cost?'disabled':''}>영입 ${cost.toLocaleString()}G</button></div></div><div class="small" style="margin-top:7px">${unlock?d.desc:`스테이지 ${d.unlock}에서 해금`}</div></div>`;
+    }
+    const need=companionXpNeed(c.lv),pct=c.lv>=50?100:Math.min(100,c.xp/Math.max(1,need)*100);
+    const branchButtons=c.lv>=20?`<div class="companion-branch"><div class="companion-branch-title">🌿 성장 분기 ${c.lv>=40?'· 강화 완료':''}</div><div class="companion-branch-actions">${Object.entries(d.branches).map(([key,b])=>`<button type="button" class="btn alt comp-branch ${c.branch===key?'selected':''}" data-id="${id}" data-branch="${key}">${c.branch===key?'✓ ':''}${b.name}</button>`).join('')}</div><div class="small" style="margin-top:5px">${c.branch?d.branches[c.branch].desc:'분기를 선택하세요.'}</div></div>`:'';
+    return `<div class="companion ${isActive?'active-companion':''}"><div class="companion-head"><div><div class="companion-title">${d.icon} ${d.name} <span class="small">Lv.${c.lv}</span></div><div class="companion-role">${d.role}</div></div><div class="companion-actions">${isActive?'<button type="button" class="btn" disabled>⚔️ 출전 중</button>':`<button type="button" class="btn green comp-active" data-id="${id}">출전</button>`}</div></div><div class="friend-bar"><div class="friend-fill" style="width:${pct}%"></div></div><div class="companion-meta"><span>🤝 ${c.lv>=50?'MAX':`${Math.floor(c.xp).toLocaleString()} / ${need.toLocaleString()}`}</span><span>${d.desc}</span></div>${branchButtons}<div class="companion-skills">${companionSkillRows(id,c)}</div><div class="ultimate-meter"><div class="row"><span>🌟 궁극기</span><b>${Math.floor(c.ult)}%</b></div><div class="ultimate-bar"><div class="ultimate-fill" style="width:${Math.min(100,c.ult)}%"></div></div></div></div>`;
+  }).join("");
+  renderFlags.companions=false;
 }
-function refreshCompanionStates(){
-  Object.entries(companionDefs).forEach(([id,d])=>{
-    const c=state.companions[id], unlock=state.stage>=d.unlock||state.maxStage>=d.unlock, cost=companionCost(id);
-    const lv=document.getElementById("comp-lv-"+id), desc=document.getElementById("comp-desc-"+id), btn=document.querySelector(`.comp-btn[data-id="${id}"]`);
-    if(!lv||!desc||!btn) return;
-    lv.textContent = c.owned ? `Lv.${c.lv}` : "";
-    desc.textContent = !unlock ? `스테이지 ${d.unlock} 해금` : c.owned ? `${d.desc} · 공격 ${Math.floor(companionDamage(id)).toLocaleString()}` : `${d.desc} · 영입 가능`;
-    btn.textContent = `${c.owned?"강화":"영입"} ${cost.toLocaleString()}G`;
-    btn.disabled = !unlock || state.gold<cost;
-  });
-}
+function refreshCompanionStates(){if(currentTab==="companions")renderCompanions();}
 
 document.getElementById("offlineRewardClose").addEventListener("click", closeOfflineReward);
 document.getElementById("soundBtn").addEventListener("click", toggleSound);
@@ -2246,7 +2422,12 @@ document.querySelectorAll("[data-bulk]").forEach(btn=>btn.addEventListener("clic
 document.getElementById("inventory").addEventListener("click", (e)=>{ const eq=e.target.closest(".equip-btn"), sell=e.target.closest(".sell-btn"); if(eq) equipItem(Number(eq.dataset.id)); if(sell) sellItem(Number(sell.dataset.id)); });
 document.getElementById("fusionBox").addEventListener("click",(e)=>{const btn=e.target.closest(".fuse-btn");if(btn)fuseGear(btn.dataset.slot,Number(btn.dataset.rarity));});
 document.getElementById("skills").addEventListener("click", (e)=>{ const use=e.target.closest(".skill-use"), auto=e.target.closest(".skill-auto"), select=e.target.closest(".skill-select"); if(select) selectSkill(select.dataset.id); if(use) manualSkill(use.dataset.id); if(auto) toggleSkill(auto.dataset.id); });
-document.getElementById("companions").addEventListener("click", (e)=>{ const btn=e.target.closest(".comp-btn"); if(btn) buyCompanion(btn.dataset.id); });
+document.getElementById("companions").addEventListener("click", (e)=>{
+  const recruit=e.target.closest(".comp-btn"),active=e.target.closest(".comp-active"),branch=e.target.closest(".comp-branch");
+  if(recruit)buyCompanion(recruit.dataset.id);
+  if(active)setActiveCompanion(active.dataset.id);
+  if(branch)selectCompanionBranch(branch.dataset.id,branch.dataset.branch);
+});
 document.getElementById("soulShop").addEventListener("click",(e)=>{const btn=e.target.closest(".soul-buy");if(btn)buySoulUpgrade(btn.dataset.soul);});
 document.getElementById("codex").addEventListener("click",(e)=>{
   const tab=e.target.closest("[data-codex-tab]");if(tab){currentCodexTab=tab.dataset.codexTab;renderCodex();return;}
@@ -2263,7 +2444,7 @@ function loop(now){
   saveAcc+=dt;
   if(saveAcc>=10){saveAcc=0;saveGame(false);}
   tickHeroEffects(dt);
-  const cdRate=(heroEffectActive("magicAmp")?1.20:1)*soulBonuses().cooldownRate*(1+specialBonuses().cooldown);
+  const cdRate=(heroEffectActive("magicAmp")?1.20:1)*soulBonuses().cooldownRate*(1+specialBonuses().cooldown)*(1+companionPassiveBonuses().cooldown);
   for(const id in state.skillCd)state.skillCd[id]=Math.max(0,(state.skillCd[id]||0)-dt*cdRate);
   if((state.bossPause||0)>0){
     state.bossPause=Math.max(0,state.bossPause-dt);
@@ -2286,6 +2467,7 @@ function loop(now){
       if(!cinematic&&state.enemy?.hp>0&&(state.bossPause||0)<=0){
         const interval=1/heroStats().speed;
         heroAcc=Math.min(heroAcc+dt,interval);enemyAcc+=dt;compAcc+=dt;priestAcc+=dt;
+        companionRuntime.shieldCd=Math.max(0,companionRuntime.shieldCd-dt);companionRuntime.miracleCd=Math.max(0,companionRuntime.miracleCd-dt);
         if(canHeroAttack()){
           // AUTO는 직업별 연계 조건을 우선한다.
           const skill=chooseAutoSkill();
@@ -2293,10 +2475,12 @@ function loop(now){
           else if(heroAcc>=interval&&heroAttack())heroAcc=0;
         }
         if(!pendingHeroAttack?.ultimate){
-          const revision=encounterRevision,slow=enemySlow(),enemySpeed=state.enemy?.attackSpeedMult||1,enemyInterval=1.65/(enemySpeed*Math.max(.25,1-slow));
+          const revision=encounterRevision,slow=Math.min(.75,enemySlow()+companionPassiveBonuses().enemySpeedReduce),enemySpeed=state.enemy?.attackSpeedMult||1,enemyInterval=1.65/(enemySpeed*Math.max(.25,1-slow));
           if(!enemyFrozen()&&enemyAcc>=enemyInterval){enemyAcc-=enemyInterval;enemyAttack();}
-          if(revision===encounterRevision&&state.enemy?.hp>0&&compAcc>=1.2){compAcc-=1.2;companionsAttack();}
-          if(revision===encounterRevision&&priestAcc>=5){priestAcc-=5;priestHeal();}
+          const compInterval=companionAttackInterval();
+          if(revision===encounterRevision&&state.enemy?.hp>0&&compAcc>=compInterval){compAcc-=compInterval;companionAttack();}
+          const healInterval=priestHealInterval();
+          if(revision===encounterRevision&&priestAcc>=healInterval){priestAcc-=healInterval;priestHeal();}
         }
       }
     }else enemyDefeatDelay=Math.max(enemyDefeatDelay,.24);
