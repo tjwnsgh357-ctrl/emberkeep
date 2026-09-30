@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<title>Emberkeep Idle RPG V8.2 · 접이식 UI</title>
+<title>Emberkeep Idle RPG V8.8 · 60+ 난이도 완화</title>
 <style>
 :root{
   --bg:#120f0c;--panel:#211a15;--panel2:#2b2119;--line:#5b4531;
@@ -949,7 +949,7 @@ function rebirthTitle(){
 }
 function baseState(){
   return {
-    version:12,gold:0,souls:0,rebirthCount:0,soulUpgrades:defaultSoulUpgrades(),codex:defaultCodex(),stage:1,maxStage:1,level:1,xp:0,xpNeed:20,
+    version:13,gold:0,souls:0,rebirthCount:0,soulUpgrades:defaultSoulUpgrades(),codex:defaultCodex(),stage:1,maxStage:1,level:1,xp:0,xpNeed:20,
     baseAtk:4,baseHp:40,baseSpeed:1,baseCrit:.05,
     up:{atk:0,hp:0,speed:0,crit:0},
     heroClass:"knight",classTiers:{knight:0,archer:0,mage:0,rogue:0},jobTier:0,hp:40,
@@ -1043,12 +1043,22 @@ function applyElite(enemy,key){
   enemy.reward=Math.max(1,Math.floor(enemy.reward*(d.reward||1)));enemy.xp=Math.max(1,Math.floor(enemy.xp*(d.xp||1)));
   enemy.name=`${d.name} ${enemy.name}`;return enemy;
 }
+function stageDifficultyBase(s){
+  const stage=Math.max(1,Math.floor(Number(s)||1));
+  const earlySteps=Math.min(stage-1,39);
+  const midSteps=Math.min(Math.max(0,stage-40),19);
+  const lateSteps=Math.max(0,stage-59);
+  // V8.8: 41~59는 완만하게, 60+는 한 번 더 성장률을 낮춘다.
+  const hp=Math.floor(18*Math.pow(1.145,earlySteps)*Math.pow(1.105,midSteps)*Math.pow(1.07,lateSteps));
+  const atk=Math.max(1,Math.floor(2.2*Math.pow(1.105,earlySteps)*Math.pow(1.065,midSteps)*Math.pow(1.045,lateSteps)));
+  return {hp,atk};
+}
 function enemyForStage(s,special=null){
   const boss=s%10===0;
   const z=zoneForStage(s),idx=Math.floor(((s-1)%20)/5);
-  const baseHp=Math.floor(18*Math.pow(1.145,Math.min(s-1,39))*Math.pow(1.105,Math.max(0,s-40)));
-  const hp=Math.floor(baseHp*(boss?5.2:1)*(special==="golden"?1.35:1));
-  const atk=Math.max(1,Math.floor(2.2*Math.pow(1.105,s-1)*(boss?1.75:1)));
+  const base=stageDifficultyBase(s);
+  const hp=Math.floor(base.hp*(boss?5.2:1)*(special==="golden"?1.35:1));
+  const atk=Math.max(1,Math.floor(base.atk*(boss?1.45:1)));
   const reward=Math.floor(6*Math.pow(1.12,s-1)*(boss?5:1)*(special==="golden"?20:1));
   const xp=Math.floor(7*Math.pow(1.075,Math.min(s-1,39))*Math.pow(1.13,Math.max(0,s-40))*(boss?3:1)*(special==="golden"?3:1));
   if(special==="golden") return {name:"황금 슬라임",spriteKey:"황금 슬라임",maxHp:hp,hp,atk,reward,xp,boss:false,golden:true,attackSpeedMult:1};
@@ -1058,6 +1068,21 @@ function enemyForStage(s,special=null){
   const enemy={name:boss?`🔥 ${bossName}`:normalName,spriteKey:boss?bossName:normalName,maxHp:hp,hp,atk,reward,xp,boss,golden:false,attackSpeedMult:1};
   if(!boss){const eliteKey=chooseEliteKey(normalName);if(eliteKey)applyElite(enemy,eliteKey);}
   return enemy;
+}
+function rebalanceEnemyObject(enemy,s){
+  if(!enemy||enemy.hp<=0)return;
+  const ratio=Math.max(0.01,Math.min(1,(Number(enemy.hp)||1)/Math.max(1,Number(enemy.maxHp)||1)));
+  const base=stageDifficultyBase(s);
+  let maxHp=Math.floor(base.hp*(enemy.boss?5.2:1)*(enemy.golden?1.35:1));
+  let atk=Math.max(1,Math.floor(base.atk*(enemy.boss?1.45:1)));
+  if(enemy.eliteKey&&eliteDefs[enemy.eliteKey]){
+    const d=eliteDefs[enemy.eliteKey];
+    maxHp=Math.max(1,Math.floor(maxHp*(d.hp||1)));
+    atk=Math.max(1,Math.floor(atk*(d.atk||1)));
+  }
+  enemy.maxHp=maxHp;
+  enemy.hp=Math.max(1,Math.min(maxHp,Math.floor(maxHp*ratio)));
+  enemy.atk=atk;
 }
 function log(msg){
   const b=document.getElementById("log"),t=new Date().toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
@@ -1581,6 +1606,12 @@ function killEnemy(){
     return;
   }
   maybeEvent();
+  // V8.7: 라운드 클리어 회복. 황금 슬라임은 위에서 원래 전투로 복귀하므로 여기까지 오지 않는다.
+  if(e.boss){
+    healHeroAmount(heroStats().hp,"👑 보스 클리어 완전 회복");
+  }else{
+    healHeroAmount(heroStats().hp*.35,"🌿 라운드 클리어 회복");
+  }
   state.stage++; state.maxStage=Math.max(state.maxStage,state.stage); spawnEnemy();
   requestRenderAll();
 }
@@ -2053,7 +2084,7 @@ function formatOfflineDuration(seconds){
 function offlineStageSnapshot(stage){
   const s=Math.max(1,Number(stage)||1);
   // 보스 스테이지에서도 오프라인 파밍은 해당 구간의 일반 몬스터 효율로 계산한다.
-  const baseHp=Math.floor(18*Math.pow(1.145,Math.min(s-1,39))*Math.pow(1.105,Math.max(0,s-40)));
+  const baseHp=stageDifficultyBase(s).hp;
   const reward=Math.floor(6*Math.pow(1.12,s-1));
   const xp=Math.floor(7*Math.pow(1.075,s-1));
   const z=zoneForStage(s),idx=Math.floor(((s-1)%20)/5),spriteKey=z.enemies[idx][0];
@@ -2152,7 +2183,7 @@ function loadGame(){
       const o=JSON.parse(raw);
       const savedVersion=Math.max(0,Number(o.version)||0);
       state=Object.assign(baseState(),o);
-      let hpBalanceMigrated=false;
+      let hpBalanceMigrated=false,stageBalanceMigrated=false;
       state.up=Object.assign({atk:0,hp:0,speed:0,crit:0},state.up||{});
       state.equipped=Object.assign({weapon:null,armor:null,ring:null},state.equipped||{});
       normalizeCompanions();
@@ -2165,6 +2196,12 @@ function loadGame(){
         state.version=12;
         hpBalanceMigrated=true;
       }
+      if(savedVersion<13){
+        rebalanceEnemyObject(state.enemy,state.stage);
+        if(state.suspendedEncounter?.enemy)rebalanceEnemyObject(state.suspendedEncounter.enemy,state.stage);
+        state.version=13;
+        stageBalanceMigrated=true;
+      }
       initSkillMaps();
       state.xpNeed=xpNeedForLevel(state.level);
       if(state.xp>=state.xpNeed) gainXp(0);
@@ -2173,8 +2210,9 @@ function loadGame(){
       state.hp=hpBalanceMigrated?heroStats().hp:Math.min(state.hp,heroStats().hp);
       renderFlags={gear:true,skills:true,companions:true};
       requestRenderAll();
-      log("💾 V8.6 저장 데이터를 불러왔다.");
+      log("💾 V8.8 저장 데이터를 불러왔다.");
       if(hpBalanceMigrated)log("❤️ HP 성장 밸런스가 소급 적용되어 최대 HP가 증가했습니다.");
+      if(stageBalanceMigrated)log("⚖️ Stage 41+ 공격력과 Stage 60+ HP/공격력 난이도가 완화되었습니다.");
       applyOfflineRewards(Date.now(),true);
       saveGame(false);
       return;
