@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<title>Emberkeep Idle RPG V8.23 · 광산 몬스터 이미지 수정</title>
+<title>Emberkeep Idle RPG V8.35 · 버그 청소판</title>
 <style>
 :root{
   --bg:#120f0c;--panel:#211a15;--panel2:#2b2119;--line:#5b4531;
@@ -355,8 +355,206 @@ h1{margin:0;font-size:clamp(24px,4vw,40px)}
 .codex-head{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:#17120f}
 .codex-progress{flex:1;min-width:210px}.codex-progress-track{height:9px;background:#0d0a08;border:1px solid #493728;border-radius:99px;overflow:hidden;margin-top:5px}.codex-progress-fill{height:100%;background:linear-gradient(90deg,#a87b32,#f2d276)}
 .codex-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:8px 0 12px}.codex-subbtn{padding:8px 4px;border:1px solid var(--line);border-radius:9px;background:#18120e;color:var(--muted);cursor:pointer;font-weight:800}.codex-subbtn.active{background:#4b341d;color:#ffe29a;border-color:#8e6936}
-.codex-zone{margin:12px 0}.codex-zone-title{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px;padding:7px 9px;background:#18130f;border-left:3px solid #ae7e38;border-radius:6px;font-weight:900}.codex-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.codex-card{border:1px solid #4b392a;background:#18130f;border-radius:10px;padding:9px;min-width:0}.codex-card.locked{opacity:.55;filter:saturate(.5)}.codex-card-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.codex-name{font-weight:900;color:#f2d49b}.codex-stars{letter-spacing:1px;color:#efc85f;font-size:12px;white-space:nowrap}.codex-meta{font-size:11px;color:var(--muted);margin-top:3px}.codex-rewards{margin-top:7px;display:flex;flex-direction:column;gap:4px}.codex-reward{display:flex;justify-content:space-between;gap:7px;align-items:center;padding:5px 6px;border-radius:7px;background:#100d0b;font-size:11px}.codex-reward.done{opacity:.55}.codex-reward.ready{outline:1px solid #9c7435;background:#241b10}.codex-claim{font-size:10px;padding:4px 7px;white-space:nowrap}.codex-item-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.codex-item-entry{border:1px solid #443326;border-radius:8px;padding:7px;background:#15110e;font-size:11px;min-height:45px}.codex-item-entry.found{border-color:#8f6a34;background:#21180f}.codex-check{font-weight:900;margin-right:4px}.codex-collection{margin:10px 0;padding:9px;border:1px solid #5b4531;border-radius:10px;background:#17120f}.codex-toast{position:fixed;left:50%;top:76px;transform:translate(-50%,-14px);z-index:10050;background:#24180d;border:1px solid #c39243;color:#ffe4a7;padding:10px 14px;border-radius:11px;box-shadow:0 8px 28px #000b;opacity:0;pointer-events:none;transition:.22s;max-width:min(88vw,460px);text-align:center;font-weight:900}.codex-toast.show{opacity:1;transform:translate(-50%,0)}
+.codex-zone{margin:12px 0}
+.codex-zone-title{
+  width:100%;display:flex;justify-content:space-between;gap:8px;align-items:center;
+  margin-bottom:6px;padding:8px 10px;background:#18130f;color:#f0d8a1;
+  border:1px solid #4b392a;border-left:3px solid #ae7e38;border-radius:7px;
+  font:inherit;font-weight:900;text-align:left;cursor:pointer
+}
+.codex-zone-title:hover{background:#21180f;border-color:#76542f}
+.codex-zone-title:focus-visible{outline:2px solid #d39a43;outline-offset:2px}
+.codex-zone-title .codex-zone-chevron{color:#b7945d;font-size:12px;flex:none}
+.codex-zone-body[hidden]{display:none!important}.codex-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.codex-card{border:1px solid #4b392a;background:#18130f;border-radius:10px;padding:9px;min-width:0}.codex-card.locked{opacity:.55;filter:saturate(.5)}.codex-card-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.codex-name{font-weight:900;color:#f2d49b}.codex-stars{letter-spacing:1px;color:#efc85f;font-size:12px;white-space:nowrap}.codex-meta{font-size:11px;color:var(--muted);margin-top:3px}.codex-rewards{margin-top:7px;display:flex;flex-direction:column;gap:4px}.codex-reward{display:flex;justify-content:space-between;gap:7px;align-items:center;padding:5px 6px;border-radius:7px;background:#100d0b;font-size:11px}.codex-reward.done{opacity:.55}.codex-reward.ready{outline:1px solid #9c7435;background:#241b10}.codex-claim{font-size:10px;padding:4px 7px;white-space:nowrap}.codex-item-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.codex-item-entry{border:1px solid #443326;border-radius:8px;padding:7px;background:#15110e;font-size:11px;min-height:45px}.codex-item-entry.found{border-color:#8f6a34;background:#21180f}.codex-check{font-weight:900;margin-right:4px}.codex-collection{margin:10px 0;padding:9px;border:1px solid #5b4531;border-radius:10px;background:#17120f}.codex-toast{position:fixed;left:50%;top:76px;transform:translate(-50%,-14px);z-index:10050;background:#24180d;border:1px solid #c39243;color:#ffe4a7;padding:10px 14px;border-radius:11px;box-shadow:0 8px 28px #000b;opacity:0;pointer-events:none;transition:.22s;max-width:min(88vw,460px);text-align:center;font-weight:900}.codex-toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:700px){.codex-grid{grid-template-columns:1fr}.codex-item-list{grid-template-columns:repeat(2,minmax(0,1fr))}.codex-tabs{grid-template-columns:repeat(3,minmax(0,1fr));}.codex-card{padding:8px}}
+
+
+/* V8.24 · 메인 탭 UI 정리 */
+body.v24-ui .wrap{max-width:1180px}
+.v24-workspace{margin-top:12px;padding-bottom:78px}
+.v24-main-view{display:none}
+.v24-main-view.active{display:block}
+.v24-main-nav{
+  position:sticky;bottom:8px;z-index:60;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:7px;
+  margin:14px 0 2px;padding:8px;
+  border:1px solid #4a3b2d;border-radius:15px;
+  background:rgba(15,12,10,.96);backdrop-filter:blur(10px);
+  box-shadow:0 10px 34px rgba(0,0,0,.35)
+}
+.v24-main-btn{
+  min-height:58px;border:1px solid #403329;border-radius:11px;
+  background:#18130f;color:#bfb1a0;font-weight:800;font-size:13px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  cursor:pointer
+}
+.v24-main-btn .ico{font-size:20px;line-height:1}
+.v24-main-btn.active{border-color:#d49b34;background:#2a1d0e;color:#ffd77b;box-shadow:inset 0 0 0 1px rgba(255,190,70,.18)}
+.v24-view-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:0 0 10px}
+.v24-view-title{font-size:20px;font-weight:900;color:#f0d894}
+.v24-view-desc{font-size:11px;color:#9e907f;margin-top:2px}
+.v24-subnav{
+  display:flex;gap:7px;overflow-x:auto;padding:6px;margin:0 0 10px;
+  border:1px solid #3b3026;border-radius:11px;background:#12100e;
+  scrollbar-width:thin
+}
+.v24-subbtn{
+  flex:1 0 auto;min-width:105px;padding:9px 12px;
+  border:1px solid #45372a;border-radius:8px;background:#191510;color:#bcb09f;
+  font-weight:800;cursor:pointer
+}
+.v24-subbtn.active{background:#33220e;color:#ffd36d;border-color:#c58d2d}
+.v24-subview{display:none}
+.v24-subview.active{display:block}
+.v24-card-shell{
+  border:1px solid #3d3127;border-radius:13px;background:#12100e;padding:12px
+}
+.v24-card-shell + .v24-card-shell{margin-top:10px}
+.v24-section-label{font-weight:900;color:#dfc887;margin:0 0 9px;font-size:14px}
+.v24-quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.v24-muted{color:#958775;font-size:11px;line-height:1.55}
+.v24-old-shell{display:none!important}
+
+/* 기존 접이식 구조는 새 탭 안에서는 한 단계 더 접히지 않도록 해제 */
+#v24Workspace .panel{margin:0!important}
+#v24Workspace .panel>h2{display:none!important}
+#v24Workspace .panel>.panel-collapse-body{display:block!important}
+#v24Workspace .panel.is-collapsed>.panel-collapse-body{display:block!important}
+#v24Workspace .mini-collapse{margin:0!important;border:0!important;background:transparent!important}
+#v24Workspace .mini-collapse>.mini-collapse-head{display:none!important}
+#v24Workspace .mini-collapse>.mini-collapse-body{display:block!important;padding:0!important}
+#v24Workspace .mini-collapse.is-collapsed>.mini-collapse-body{display:block!important}
+#v24Workspace .tabpage{display:block!important}
+#v24Workspace .tabs{display:none!important}
+#v24Workspace .bottomgrid,#v24Workspace .grid{display:block}
+#v24Workspace .analytics-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+#v24Workspace #soundBtn{width:100%;min-height:46px}
+#v24Workspace .equipgrid{margin-top:0}
+#v24Workspace #inventory{max-height:none}
+
+@media(max-width:760px){
+  .v24-main-nav{bottom:4px;gap:4px;padding:6px}
+  .v24-main-btn{min-height:54px;font-size:11px}
+  .v24-main-btn .ico{font-size:18px}
+  .v24-subbtn{min-width:92px}
+  .v24-quick-grid{grid-template-columns:1fr}
+  #v24Workspace .analytics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.v24-ui header{gap:8px}
+  body.v24-ui header .sub{display:none}
+}
+
+
+/* V8.25 · 전투 미니 통계 */
+.combat-mini-stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
+  margin:8px 0 10px;
+}
+.combat-mini-stat{
+  min-width:0;
+  padding:7px 8px;
+  border:1px solid #3d3228;
+  border-radius:9px;
+  background:#14110e;
+  text-align:center;
+}
+.combat-mini-stat .label{
+  font-size:10px;
+  color:#9f927f;
+  white-space:nowrap;
+}
+.combat-mini-stat .value{
+  margin-top:2px;
+  font-size:14px;
+  line-height:1.1;
+  font-weight:900;
+  color:#f1d68e;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media(max-width:620px){
+  .combat-mini-stats{gap:4px}
+  .combat-mini-stat{padding:6px 4px}
+  .combat-mini-stat .label{font-size:9px}
+  .combat-mini-stat .value{font-size:12px}
+}
+
+
+/* V8.26 · 전투 화면 하단 모험 기록 */
+#v24Workspace [data-main-view="combat"] .combat-log-shell{
+  margin-top:10px;
+  padding:10px;
+  border:1px solid #3d3127;
+  border-radius:12px;
+  background:#12100e;
+}
+#v24Workspace [data-main-view="combat"] .combat-log-shell .log{
+  height:120px;
+  margin-top:7px;
+}
+#v24Workspace [data-main-view="combat"] .combat-log-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  font-size:13px;
+  font-weight:900;
+  color:#ddc98f;
+}
+#v24Workspace [data-main-view="combat"] .combat-log-note{
+  font-size:10px;
+  color:#8f8271;
+}
+@media(max-width:620px){
+  #v24Workspace [data-main-view="combat"] .combat-log-shell .log{height:100px}
+}
+
+
+/* V8.27 · 칭호 업적 */
+.title-achievement-head{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
+  margin-bottom:8px;padding:8px 9px;border:1px solid #57406e;border-radius:9px;background:#17101d
+}
+.title-achievement-current{font-weight:900;color:#e4c5ff}
+.title-achievement-list{display:flex;flex-direction:column;gap:6px}
+.title-achievement-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:8px 9px;border:1px solid #3f3349;border-radius:8px;background:#110d15
+}
+.title-achievement-row.ready{border-color:#9b6fd0;background:#1d1327}
+.title-achievement-row.claimed{border-color:#51425e;background:#151019}
+.title-achievement-name{font-weight:900;color:#dbc0f4;font-size:12px}
+.title-achievement-cond{font-size:10px;color:#96869f;margin-top:2px}
+.title-achievement-actions{display:flex;gap:5px;align-items:center}
+.title-achievement-actions .btn{font-size:10px;padding:5px 8px;white-space:nowrap}
+.title-achievement-done{font-size:10px;color:#9c8daa;font-weight:800}
+
+
+/* V8.29 · 도감 지역 보상 상태 표시 */
+.codex-reward-applied{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px 7px;
+  border-radius:999px;
+  border:1px solid #3d5c3b;
+  background:#132016;
+  color:#91d18e;
+  font-size:10px;
+  font-weight:900;
+  white-space:nowrap;
+  cursor:default;
+}
+.codex-reward.locked-reward .codex-claim[disabled]{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+
+/* V8.34 · 숨겨진 영웅 클릭 기믹 */
+#heroSprite{cursor:pointer}
 
 </style>
 <style id="pwa-style">
@@ -390,7 +588,7 @@ img{-webkit-touch-callout:none}
 <div id="startupError" style="display:none;position:fixed;left:12px;right:12px;top:12px;z-index:99999;padding:12px;border-radius:10px;background:#7b1e1e;color:#fff;font-weight:800"></div>
 <div class="wrap">
 <header>
-  <div><h1>🔥 Emberkeep</h1><div class="sub">멀티 클래스 · 48스킬 · 동료 2.0 · 도감 연구 2.0 · 장비 관리 · 접이식 장비 UI · 환생 2.0</div></div>
+  <div><h1>🔥 Emberkeep</h1><div class="sub">멀티 클래스 · 48스킬 · 동료 2.0 · 도감 연구 2.0 · 메인 탭 UI · 환생 2.0</div></div>
   <div class="topstats">
     <div class="chip">🪙 <span id="gold">0</span></div>
     <div class="chip">💠 <span id="souls">0</span></div>
@@ -440,6 +638,12 @@ img{-webkit-touch-callout:none}
     <div id="enemyStatus" class="combat-status"></div>
   </div>
 </div>
+<div id="combatMiniStats" class="combat-mini-stats">
+  <div class="combat-mini-stat"><div class="label">⚔️ DPS</div><div class="value" id="miniDps">-</div></div>
+  <div class="combat-mini-stat"><div class="label">👹 분당 처치</div><div class="value" id="miniKpm">-</div></div>
+  <div class="combat-mini-stat"><div class="label">📚 분당 EXP</div><div class="value" id="miniXpm">-</div></div>
+  <div class="combat-mini-stat"><div class="label">🪙 분당 골드</div><div class="value" id="miniGpm">-</div></div>
+</div>
 <div class="stagebox">
   <span><b id="zoneName">초원의 길</b> · 스테이지 <span id="stage">1</span></span>
   <span id="bossInfo"></span>
@@ -483,7 +687,7 @@ img{-webkit-touch-callout:none}
 <h2>성장</h2>
 <div class="content">
   <div class="card row"><div><b>⚔️ 검 강화</b><div class="small">기본 공격력 +2</div></div><button type="button" id="upAtk" class="btn"></button></div>
-  <div class="card row"><div><b>❤️ 갑옷 강화</b><div class="small">기본 최대체력 +12</div></div><button type="button" id="upHp" class="btn"></button></div>
+  <div class="card row"><div><b>❤️ 갑옷 강화</b><div class="small">기본 최대체력 +18</div></div><button type="button" id="upHp" class="btn"></button></div>
   <div class="card row"><div><b>💨 전투 훈련</b><div class="small">공격속도 +6%</div></div><button type="button" id="upSpeed" class="btn"></button></div>
   <div class="card row"><div><b>🎯 치명타 훈련</b><div class="small">치명타 +1.5%</div></div><button type="button" id="upCrit" class="btn"></button></div>
 </div>
@@ -642,31 +846,6 @@ img{-webkit-touch-callout:none}
 </div>
 </section>
 </div>
-
-<section class="panel" style="margin-top:16px">
-<h2>📊 전투 통계 / 성장 분석</h2>
-<div class="content">
-  <div class="analytics-head">
-    <div class="small">최근 60초 실전 기록 기준 · 조우/드랍은 현재 실행 세션 누적</div>
-    <button type="button" class="btn alt" id="analyticsResetBtn">통계 초기화</button>
-  </div>
-  <div id="combatAnalytics" class="analytics-grid">
-    <div class="analytics-card"><div class="label">⚔️ DPS</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">👹 분당 처치</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">📚 분당 EXP</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">🪙 분당 골드</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">⏱️ 레벨업 예상</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">🎯 평균 처치시간</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">👑 보스 예상</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">🩸 받은 피해/초</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">🤝 동료 딜 기여</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">🎁 장비 드랍</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">⚡ 엘리트 조우</div><div class="value">-</div></div>
-    <div class="analytics-card"><div class="label">💰 황금 고블린 조우</div><div class="value">-</div></div>
-  </div>
-  <div class="analytics-note">※ DPS는 본캐 평타·스킬·도트·반사 + 출전 동료의 실제 피해를 합산합니다. 판매/상자/오프라인 보상은 분당 골드·EXP에 포함하지 않습니다.</div>
-</div>
-</section>
 
 <section class="panel" style="margin-top:16px">
 <h2>모험 기록</h2>
@@ -937,11 +1116,25 @@ function codexRecordKill(enemy){
 }
 function codexGraduatedZoneIndexes(){
   const max=Math.max(1,Number(state.maxStage)||1),list=[];
-  zones.forEach((z,zi)=>{const regionEnd=(zi+1)*20;if(max-regionEnd>=20)list.push(zi);});
+  zones.forEach((z,zi)=>{
+    const regionEnd=(zi+1)*20;
+    if(max>regionEnd)list.push(zi);
+  });
   return list;
 }
+function codexZoneResearchComplete(zi){
+  const zone=zones[Number(zi)];
+  if(!zone)return false;
+  return zone.enemies.every(([name])=>codexEntry("monsters",name).kills>=500);
+}
 function codexResearchCandidates(){
-  const out=[];for(const zi of codexGraduatedZoneIndexes())for(const [name] of zones[zi].enemies){const e=codexEntry("monsters",name);if(e.kills<500)out.push({zi,name,e});}
+  const out=[];
+  for(const zi of codexGraduatedZoneIndexes()){
+    for(const [name] of zones[zi].enemies){
+      const e=codexEntry("monsters",name);
+      if(e.kills<500)out.push({zi,name,e});
+    }
+  }
   return out;
 }
 function applyOneCodexResearch(){
@@ -1026,29 +1219,91 @@ function claimCodexReward(group,key,id){
   if(group==="bosses"&&Number(id)===100){state.souls+=2;log(`👑 ${key} 100회 정복 · 💠 소울 2`);}
   if(group==="elites"&&Number(id)===1){state.gold+=3000;log(`⚡ ${eliteDefs[key].name} 첫 처치 도감 보상 · 🪙3,000`);}
   if(group==="elites"&&Number(id)===100){state.souls+=1;log(`⚡ ${eliteDefs[key].name} 100회 정복 · 💠 소울 1`);}
-  state.hp=Math.min(state.hp,heroStats().hp);saveGame(false);requestRenderAll();renderCodex();
+  state.hp=Math.min(state.hp,heroStats().hp);saveGame(false);requestRenderAll();renderCodex();renderTitleAchievements();
 }
-function claimCollectionReward(p){normalizeCodex();const d=equipmentDiscovery();if(state.codex.collectionClaims[p]||d.pct<p)return;state.codex.collectionClaims[p]=true;if(Number(p)===100)state.souls+=5;log(`📚 장비 도감 ${p}% 보상 획득 · ${collectionRewardText(Number(p))}`);saveGame(false);requestRenderAll();}
+function claimCollectionReward(p){normalizeCodex();const d=equipmentDiscovery();if(state.codex.collectionClaims[p]||d.pct<p)return;state.codex.collectionClaims[p]=true;if(Number(p)===100)state.souls+=5;log(`📚 장비 도감 ${p}% 보상 획득 · ${collectionRewardText(Number(p))}`);saveGame(false);requestRenderAll();renderTitleAchievements();}
 function claimRegionReward(i,step){
-  normalizeCodex();i=Number(i);const key=step==="discover"?"discover":Number(step),bucket=state.codex.regionClaims[i]||(state.codex.regionClaims[i]={});
-  if(bucket[key]||!regionStepEligible(i,key))return;bucket[key]=true;
-  if(key===500){state.souls+=3;log(`🏆 ${zones[i].name} 완전 정복 · 💠 소울 3 · 칭호 「${REGION_TITLES[i]}」 해금`);}
-  else log(`🗺️ ${zones[i].name} 지역 도감 보상 · ${regionRewardText(i,key)}`);
-  state.hp=Math.min(state.hp,heroStats().hp);saveGame(false);requestRenderAll();renderCodex();
+  i=Number(i);
+  const key=step==="discover"?"discover":Number(step);
+
+  // regionStepEligible() 내부의 codexEntry()가 normalizeCodex()를 호출하면서
+  // regionClaims 하위 객체가 새 객체로 교체될 수 있다.
+  // 따라서 조건 확인 뒤 반드시 최신 bucket을 다시 가져온다.
+  normalizeCodex();
+  if(!regionStepEligible(i,key))return;
+
+  normalizeCodex();
+  const bucket=state.codex.regionClaims[i]||(state.codex.regionClaims[i]={});
+  if(bucket[key])return;
+
+  bucket[key]=true;
+
+  if(key===500){
+    state.souls+=3;
+    log(`🏆 ${zones[i].name} 완전 정복 · 💠 소울 3 · 칭호 「${REGION_TITLES[i]}」 해금`);
+  }else{
+    log(`🗺️ ${zones[i].name} 지역 도감 보상 · ${regionRewardText(i,key)}`);
+  }
+
+  state.hp=Math.min(state.hp,heroStats().hp);
+  saveGame(false);
+  requestRenderAll();
+  renderCodex();
+  renderTitleAchievements();
 }
 function regionRewardRow(i,step){
-  const b=state.codex.regionClaims[i]||{},key=step==="discover"?"discover":Number(step),done=!!b[key],ready=regionStepEligible(i,key),need=key==="discover"?"4종 발견":`4종 ${key}회`;
-  return `<div class="codex-reward ${done?'done':ready?'ready':''}"><span>${need} · ${regionRewardText(i,key)}</span>${done?'<b>완료</b>':`<button type="button" class="btn codex-claim" data-region-claim="${i}" data-region-step="${key}" ${ready?'':'disabled'}>보상 받기</button>`}</div>`;
+  const b=state.codex.regionClaims[i]||{};
+  const key=step==="discover"?"discover":Number(step);
+  const done=!!b[key],ready=regionStepEligible(i,key);
+  const need=key==="discover"?"4종 발견":`4종 ${key}회`;
+  const action=done
+    ? '<span class="codex-reward-applied" title="이미 수령되어 보너스가 적용 중입니다.">✅ 보상 적용 중</span>'
+    : `<button type="button" class="btn codex-claim" data-region-claim="${i}" data-region-step="${key}" ${ready?'':'disabled'} title="${ready?'조건 달성 · 클릭하여 보상 수령':'아직 조건을 달성하지 못했습니다.'}">${ready?'보상 받기':'미달성'}</button>`;
+  return `<div class="codex-reward ${done?'done':ready?'ready':'locked-reward'}"><span>${need} · ${regionRewardText(i,key)}</span>${action}</div>`;
 }
 function starsForMonster(e){return [e.discovered,e.kills>=10,e.kills>=50,e.kills>=200,e.kills>=500].map(x=>x?"★":"☆").join("");}
 function rewardRow(group,key,id,label,need){const e=codexEntry(group,key),done=!!e.claimed[id],ready=codexEligible(group,key,id);return `<div class="codex-reward ${done?'done':ready?'ready':''}"><span>${need} · ${label}</span>${done?'<b>완료</b>':`<button type="button" class="btn codex-claim" data-codex-claim="${group}" data-key="${encodeURIComponent(key)}" data-step="${id}" ${ready?'':'disabled'}>보상 받기</button>`}</div>`;}
+const CODEX_ZONE_COLLAPSE_KEY="emberkeep-codex-zone-collapse-v1";
+let codexZoneCollapsed=(()=>{
+  try{
+    const raw=JSON.parse(localStorage.getItem(CODEX_ZONE_COLLAPSE_KEY)||"{}");
+    return raw&&typeof raw==="object"?raw:{};
+  }catch(e){return {};}
+})();
+function saveCodexZoneCollapsed(){
+  try{localStorage.setItem(CODEX_ZONE_COLLAPSE_KEY,JSON.stringify(codexZoneCollapsed));}catch(e){}
+}
+function toggleCodexZone(index){
+  const i=Math.max(0,Math.min(zones.length-1,Number(index)||0));
+  codexZoneCollapsed[i]=!codexZoneCollapsed[i];
+  saveCodexZoneCollapsed();
+  renderCodex();
+}
+
 function renderMonsterCodex(){
-  const graduated=new Set(codexGraduatedZoneIndexes()),researchTarget=graduated.size?`자동 연구 ${Math.max(0,Number(state.codexResearchProgress)||0)}/5 · 졸업 지역 ${graduated.size}곳`:"최고 스테이지가 지역 끝보다 20 이상 높아지면 자동 연구 시작";
-  const head=`<div class="notice" style="margin-bottom:10px"><b>🔬 과거 지역 자동 연구</b><br>${researchTarget}<br><span class="small">현재 전투의 일반 몬스터 5마리 처치마다 졸업 지역의 가장 낮은 처치 수 몬스터 +1 · 오프라인 사냥도 적용</span></div>`;
+  const graduated=new Set(codexGraduatedZoneIndexes());
+  const activeResearch=[...graduated].filter(zi=>!codexZoneResearchComplete(zi));
+  const completedResearch=[...graduated].filter(zi=>codexZoneResearchComplete(zi));
+  const researchTarget=graduated.size
+    ? `자동 연구 ${Math.max(0,Number(state.codexResearchProgress)||0)}/5 · 연구 중 ${activeResearch.length}곳${completedResearch.length?` · 완료 ${completedResearch.length}곳`:""}`
+    : "지역을 완전히 벗어나면 해당 지역 자동 연구 시작";
+  const head=`<div class="notice" style="margin-bottom:10px"><b>🔬 과거 지역 자동 연구</b><br>${researchTarget}<br><span class="small">현재 전투의 일반 몬스터 5마리 처치마다 지나온 지역의 가장 낮은 처치 수 몬스터 +1 · 오프라인 사냥도 적용</span></div>`;
   return head+zones.map((z,zi)=>{
     const cards=z.enemies.map(([name,icon])=>{const e=codexEntry("monsters",name);return `<div class="codex-card ${e.discovered?'':'locked'}"><div class="codex-card-top"><div><div class="codex-name">${e.discovered?`${icon} ${name}`:'❔ 미발견 몬스터'}</div><div class="codex-meta">처치/연구 ${e.kills.toLocaleString()}회</div></div><div class="codex-stars">${starsForMonster(e)}</div></div><div class="codex-rewards">${rewardRow("monsters",name,"discover",monsterRewardText("discover"),"발견")}${rewardRow("monsters",name,10,monsterRewardText(10),"10회")}${rewardRow("monsters",name,50,monsterRewardText(50),"50회")}${rewardRow("monsters",name,200,monsterRewardText(200),"200회")}${rewardRow("monsters",name,500,monsterRewardText(500),"500회")}</div></div>`;}).join("");
-    const status=graduated.has(zi)?"🔬 자동 연구 중":"";
-    return `<div class="codex-zone"><div class="codex-zone-title"><span>🗺️ ${z.name} ${status?`· ${status}`:""}</span></div><div class="codex-rewards" style="margin:8px 0 10px">${CODEX_REGION_STEPS.map(step=>regionRewardRow(zi,step)).join("")}</div><div class="codex-grid">${cards}</div></div>`;
+    const status=graduated.has(zi)
+      ? (codexZoneResearchComplete(zi)?"✅ 연구 완료":"🔬 자동 연구 중")
+      : "";
+    const collapsed=!!codexZoneCollapsed[zi];
+    return `<div class="codex-zone">
+      <button type="button" class="codex-zone-title" data-codex-zone="${zi}" aria-expanded="${collapsed?"false":"true"}">
+        <span>🗺️ ${z.name} ${status?`· ${status}`:""}</span>
+        <span class="codex-zone-chevron" aria-hidden="true">${collapsed?"▶":"▼"}</span>
+      </button>
+      <div class="codex-zone-body" ${collapsed?"hidden":""}>
+        <div class="codex-rewards" style="margin:8px 0 10px">${CODEX_REGION_STEPS.map(step=>regionRewardRow(zi,step)).join("")}</div>
+        <div class="codex-grid">${cards}</div>
+      </div>
+    </div>`;
   }).join("");
 }
 function renderBossCodex(){return `<div class="codex-grid">${CODEX_BOSSES.map((name,i)=>{const e=codexEntry("bosses",name);return `<div class="codex-card ${e.discovered?'':'locked'}"><div class="codex-card-top"><div><div class="codex-name">${e.discovered?`👑 ${name}`:'❔ 미발견 보스'}</div><div class="codex-meta">처치 ${e.kills.toLocaleString()}회</div></div></div><div class="codex-rewards">${CODEX_BOSS_STEPS.map(s=>rewardRow("bosses",name,s,bossRewardText(s),`${s}회`)).join("")}</div></div>`;}).join("")}</div>`;}
@@ -1157,18 +1412,74 @@ function soulBonuses(){
     eliteAdd:u.hunter*.005,cooldownRate:1+u.haste*.01,companionMult:1+u.bond*.05,dropAdd:u.luck*.01
   };
 }
-function rebirthTitle(){
-  const n=Math.max(0,Number(state.rebirthCount)||0);
-  if(n>=20)return "🌌 영원의 방랑자";
-  if(n>=10)return "👑 불멸의 개척자";
-  if(n>=5)return "💠 영혼 수집가";
-  if(n>=3)return "🔁 윤회의 모험가";
-  if(n>=1)return "✨ 영혼 각성자";
-  return "🌱 초보 모험가";
+const TITLE_ACHIEVEMENTS={
+  beginner:{name:"🌱 초보 모험가",cond:"기본 칭호",eligible:()=>true},
+  rebirth1:{name:"✨ 영혼 각성자",cond:"환생 1회",eligible:()=>Number(state.rebirthCount||0)>=1},
+  rebirth3:{name:"🔁 윤회의 모험가",cond:"환생 3회",eligible:()=>Number(state.rebirthCount||0)>=3},
+  rebirth5:{name:"💠 영혼 수집가",cond:"환생 5회",eligible:()=>Number(state.rebirthCount||0)>=5},
+  rebirth10:{name:"👑 불멸의 개척자",cond:"환생 10회",eligible:()=>Number(state.rebirthCount||0)>=10},
+  rebirth20:{name:"🌌 영원의 방랑자",cond:"환생 20회",eligible:()=>Number(state.rebirthCount||0)>=20},
+  collection100:{name:"👑 왕실 수집가",cond:"장비 도감 100% 보상 완료",eligible:()=>!!state.codex?.collectionClaims?.[100]},
+  region0:{name:"🌿 초원의 개척자",cond:"초원의 길 도감 500회 완전 정복",eligible:()=>!!state.codex?.regionClaims?.[0]?.[500]},
+  region1:{name:"🌲 고블린 숲의 추적자",cond:"고블린 숲 도감 500회 완전 정복",eligible:()=>!!state.codex?.regionClaims?.[1]?.[500]},
+  region2:{name:"⛏️ 폐광의 탐사자",cond:"폐광 도감 500회 완전 정복",eligible:()=>!!state.codex?.regionClaims?.[2]?.[500]},
+  region3:{name:"🏰 망자의 성 정복자",cond:"망자의 성 도감 500회 완전 정복",eligible:()=>!!state.codex?.regionClaims?.[3]?.[500]},
+  region4:{name:"🐉 용의 협곡 개척자",cond:"용의 협곡 도감 500회 완전 정복",eligible:()=>!!state.codex?.regionClaims?.[4]?.[500]}
+};
+function normalizeTitles(){
+  state.titleClaims=Object.assign({beginner:true},state.titleClaims||{});
+  state.titleClaims.beginner=true;
+  if(!TITLE_ACHIEVEMENTS[state.equippedTitle]||!state.titleClaims[state.equippedTitle])state.equippedTitle="beginner";
+}
+function activeTitle(){
+  normalizeTitles();
+  return TITLE_ACHIEVEMENTS[state.equippedTitle]?.name||TITLE_ACHIEVEMENTS.beginner.name;
+}
+function rebirthTitle(){return activeTitle();}
+function titleAchievementEligible(id){
+  const d=TITLE_ACHIEVEMENTS[id];if(!d)return false;
+  try{return !!d.eligible();}catch(e){return false;}
+}
+function claimTitleAchievement(id){
+  normalizeTitles();
+  const d=TITLE_ACHIEVEMENTS[id];
+  if(!d||state.titleClaims[id]||!titleAchievementEligible(id))return;
+  state.titleClaims[id]=true;
+  log(`🏅 칭호 업적 완료 · 「${d.name}」 획득`);
+  renderTitleAchievements();
+  saveGame(false);
+}
+function equipTitle(id){
+  normalizeTitles();
+  if(!TITLE_ACHIEVEMENTS[id]||!state.titleClaims[id])return;
+  state.equippedTitle=id;
+  log(`🏅 칭호 장착 · ${TITLE_ACHIEVEMENTS[id].name}`);
+  renderTitleAchievements();
+  saveGame(false);
+}
+function renderTitleAchievements(){
+  const box=document.getElementById("rebirthTitle");if(!box)return;
+  normalizeTitles();
+  const rows=Object.entries(TITLE_ACHIEVEMENTS).map(([id,d])=>{
+    const claimed=!!state.titleClaims[id],ready=titleAchievementEligible(id),equipped=state.equippedTitle===id;
+    let action="";
+    if(!claimed){
+      action=`<button type="button" class="btn purple title-claim" data-title-claim="${id}" ${ready?"":"disabled"}>${ready?"완료":"미달성"}</button>`;
+    }else if(equipped){
+      action='<button type="button" class="btn" disabled>장착 중</button>';
+    }else{
+      action=`<button type="button" class="btn alt title-equip" data-title-equip="${id}">장착</button>`;
+    }
+    return `<div class="title-achievement-row ${claimed?"claimed":ready?"ready":""}">
+      <div><div class="title-achievement-name">${d.name}</div><div class="title-achievement-cond">${d.cond}${claimed?" · 획득 완료":ready?" · 완료 가능":""}</div></div>
+      <div class="title-achievement-actions">${action}</div>
+    </div>`;
+  }).join("");
+  box.innerHTML=`<div class="title-achievement-head"><div><div class="small">현재 장착 칭호</div><div class="title-achievement-current">${activeTitle()}</div></div><div class="small">환생 ${Number(state.rebirthCount||0)}회</div></div><div class="title-achievement-list">${rows}</div>`;
 }
 function baseState(){
   return {
-    version:19,gold:0,souls:0,setEssence:0,rebirthCount:0,soulUpgrades:defaultSoulUpgrades(),codex:defaultCodex(),codexResearchProgress:0,stage:1,maxStage:1,level:1,xp:0,xpNeed:20,
+    version:CURRENT_SAVE_VERSION,gold:0,souls:0,setEssence:0,rebirthCount:0,soulUpgrades:defaultSoulUpgrades(),codex:defaultCodex(),titleClaims:{beginner:true},equippedTitle:"beginner",codexResearchProgress:0,stage:1,maxStage:1,level:1,xp:0,xpNeed:20,
     baseAtk:4,baseHp:40,baseSpeed:1,baseCrit:.05,
     up:{atk:0,hp:0,speed:0,crit:0},
     heroClass:"knight",classTiers:{knight:0,archer:0,mage:0,rogue:0},jobTier:0,hp:40,
@@ -1178,6 +1489,7 @@ function baseState(){
     enemy:null,bossTime:30,bossPause:0,suspendedEncounter:null,event:null,eventDismissed:false,soundOn:true,lastSave:Date.now()
   };
 }
+const CURRENT_SAVE_VERSION=31;
 const SAVE_KEY="emberkeep-save-v7-mobile1";
 let state = baseState();
 let currentTab = "gear";
@@ -1315,47 +1627,38 @@ function resetCombatAnalytics(){
   renderCombatAnalytics(true);
 }
 function renderCombatAnalytics(force=false){
-  const box=document.getElementById("combatAnalytics");if(!box)return;
+  const dpsEl=document.getElementById("miniDps");
+  const kpmEl=document.getElementById("miniKpm");
+  const xpmEl=document.getElementById("miniXpm");
+  const gpmEl=document.getElementById("miniGpm");
+  if(!dpsEl||!kpmEl||!xpmEl||!gpmEl)return;
+
   const nowPerf=performance.now();
   if(!force&&nowPerf-lastAnalyticsRender<500)return;
   lastAnalyticsRender=nowPerf;
-  const a=ensureCombatAnalytics(),now=Date.now();pruneAnalytics(now);
+
+  const a=ensureCombatAnalytics(),now=Date.now();
+  pruneAnalytics(now);
+
   const sessionMs=Math.max(1000,now-a.startedAt);
   const windowMs=Math.min(ANALYTICS_WINDOW_MS,sessionMs);
-  const seconds=Math.max(1,windowMs/1000),minuteFactor=60/seconds;
+  const seconds=Math.max(1,windowMs/1000);
+  const minuteFactor=60/seconds;
+
   const totalDamage=a.damage.reduce((s,x)=>s+x.v,0);
-  const companionDamageNow=a.damage.filter(x=>x.source==="companion").reduce((s,x)=>s+x.v,0);
-  const incoming=a.incoming.reduce((s,x)=>s+x.v,0);
   const killCount=a.kills.length;
   const rewardGold=a.rewards.reduce((s,x)=>s+x.gold,0);
   const rewardXp=a.rewards.reduce((s,x)=>s+x.xp,0);
+
   const dps=totalDamage/seconds;
   const kpm=killCount*minuteFactor;
   const gpm=rewardGold*minuteFactor;
   const xpm=rewardXp*minuteFactor;
-  const xpPerSec=xpm/60;
-  const xpRemain=Math.max(0,(Number(state.xpNeed)||0)-(Number(state.xp)||0));
-  const levelEta=xpPerSec>0?xpRemain/xpPerSec:Infinity;
-  const recentFights=a.fightDurations.slice(-10);
-  const avgKill=recentFights.length?recentFights.reduce((s,x)=>s+x.dur,0)/recentFights.length:Infinity;
-  const e=state.enemy;
-  const bossEta=e?.boss&&dps>0?Math.max(0,e.hp)/dps:Infinity;
-  const compShare=totalDamage>0?companionDamageNow/totalDamage*100:0;
-  const cards=[
-    ["⚔️ DPS",Math.round(dps).toLocaleString(),`최근 ${Math.round(seconds)}초 실제 피해`],
-    ["👹 분당 처치",kpm.toFixed(kpm<10?1:0),`${killCount}마리 기록`],
-    ["📚 분당 EXP",Math.round(xpm).toLocaleString(),`현재 Lv.${state.level}`],
-    ["🪙 분당 골드",Math.round(gpm).toLocaleString(),"전투 처치 보상만"],
-    ["⏱️ 레벨업 예상",formatAnalyticsDuration(levelEta),`남은 EXP ${Math.ceil(xpRemain).toLocaleString()}`],
-    ["🎯 평균 처치시간",formatAnalyticsDuration(avgKill),`최근 ${recentFights.length}전 평균`],
-    ["👑 보스 예상",e?.boss?formatAnalyticsDuration(bossEta):"현재 보스 아님",e?.boss?`남은 제한 ${Math.ceil(state.bossTime||0)}초`:"보스전에서 ETA 표시"],
-    ["🩸 받은 피해/초",Math.round(incoming/seconds).toLocaleString(),`최근 실제 HP 피해`],
-    ["🤝 동료 딜 기여",`${compShare.toFixed(1)}%`,activeCompanionDef()?`${activeCompanionDef().icon} ${activeCompanionDef().name}`:"출전 동료 없음"],
-    ["🎁 장비 드랍",`${a.drops.toLocaleString()}회`,"현재 실행 세션"],
-    ["⚡ 엘리트 조우",`${a.eliteEncounters.toLocaleString()}회`,"현재 실행 세션"],
-    ["💰 황금 고블린 조우",`${a.goldGoblinEncounters.toLocaleString()}회`,"현재 실행 세션"]
-  ];
-  box.innerHTML=cards.map(([label,value,sub])=>`<div class="analytics-card"><div class="label">${label}</div><div class="value">${value}</div><div class="subvalue">${sub}</div></div>`).join("");
+
+  dpsEl.textContent=Math.round(dps).toLocaleString();
+  kpmEl.textContent=kpm.toFixed(kpm<10?1:0);
+  xpmEl.textContent=Math.round(xpm).toLocaleString();
+  gpmEl.textContent=Math.round(gpm).toLocaleString();
 }
 function goldGoblinSpawnChance(normalName){
   const misses=Math.max(0,Number(state.goldGoblinMisses)||0);
@@ -1936,9 +2239,9 @@ function killEnemy(){
   if(e.elite&&sb.eliteReward){goldExtra*=1+sb.eliteReward;xpExtra*=1+sb.eliteReward;}
   const g=Math.floor(e.reward*(1+st.gold)*rewardMult()*goldExtra);
   const x=Math.floor(e.xp*xpSoulMult()*xpExtra);
-  state.gold+=g; gainXp(x); recordAnalyticsReward(g,x); recordAnalyticsKill(e);
+  const combatXp=Math.floor(x*1.5); state.gold+=g; gainXp(combatXp); recordAnalyticsReward(g,combatXp); recordAnalyticsKill(e);
   const friendXp=gainCompanionXp(companionFriendXpForEnemy(e));
-  log(`✅ ${e.name} 처치 · 🪙${g.toLocaleString()} · EXP ${x.toLocaleString()}${friendXp?` · 🤝${friendXp}`:""}`);
+  log(`✅ ${e.name} 처치 · 🪙${g.toLocaleString()} · EXP ${combatXp.toLocaleString()}${friendXp?` · 🤝${friendXp}`:""}`);
   if(e.elite)maybeEliteSetDrop(e);
   maybeDrop(e);
   if(sb.killHeal>0){const heal=heroStats().hp*sb.killHeal;healHeroAmount(heal,"");}
@@ -2346,19 +2649,19 @@ function renderFusion(){
   box.innerHTML=`<b>🧪 장비 합성</b><div class="small" style="margin-top:3px">같은 부위·같은 등급의 일반 장비 3개 → 다음 등급 1개. 세트 장비와 장착 장비는 재료에서 제외됩니다. 약한 장비부터 자동 선택합니다.</div><div class="fusion-grid">${slots.map(slot=>`<div class="fusion-col"><div class="fusion-title">${slotNames[slot]}</div>${[0,1,2,3].map(ri=>{const n=fusionCandidates(slot,ri).length;return `<div class="fusion-row"><span class="${rarity[ri].cls}">${rarity[ri].name} ${n}/3 → ${rarity[ri+1].name}</span><button type="button" class="btn purple fuse-btn" data-slot="${slot}" data-rarity="${ri}" ${n<3?'disabled':''}>합성</button></div>`}).join('')}</div>`).join('')}</div>`;
 }
 function autoEquip(){
-  ["weapon","armor","ring"].forEach(slot=>{
-    let candidates=state.inventory.filter(i=>i.slot===slot);
-    if(state.equipped[slot]) candidates.push(state.equipped[slot]);
-    if(!candidates.length) return;
-    candidates.sort((a,b)=>itemPower(b)-itemPower(a));
-    const best=candidates[0];
-    if(state.equipped[slot]?.id===best.id) return;
-    const idx=state.inventory.findIndex(i=>i.id===best.id);
-    if(idx>=0){ const old=state.equipped[slot]; state.inventory.splice(idx,1); if(old) state.inventory.push(old); state.equipped[slot]=best; }
-  });
+  const slots=["weapon","armor","ring"],pools=slots.map(slot=>{const list=autoEquipCandidates(slot);return list.length?list:[null];});
+  let bestLoadout=Object.assign({},state.equipped),bestScore=equipmentLoadoutScore(bestLoadout);
+  for(const weapon of pools[0])for(const armor of pools[1])for(const ring of pools[2]){
+    const loadout={weapon,armor,ring},score=equipmentLoadoutScore(loadout);
+    if(score>bestScore){bestScore=score;bestLoadout=loadout;}
+  }
+  const all=[...state.inventory,...Object.values(state.equipped||{}).filter(Boolean)];
+  const selected=new Set(Object.values(bestLoadout).filter(Boolean).map(i=>i.id));
+  state.inventory=all.filter(i=>!selected.has(i.id));
+  state.equipped={weapon:bestLoadout.weapon||null,armor:bestLoadout.armor||null,ring:bestLoadout.ring||null};
   state.hp=Math.min(state.hp,heroStats().hp);
-  log("🧠 가장 전투력이 높은 장비를 자동 장착했다.");
-  renderFlags.gear=true; requestRenderAll(); saveGame(false);
+  log("🧠 세트 효과까지 비교해 가장 유리한 전투 장비 조합을 자동 장착했다.");
+  renderFlags.gear=true;requestRenderAll();saveGame(false);
 }
 
 function companionCost(id){return Math.floor((companionDefs[id]?.base||20)*15);}
@@ -2542,9 +2845,9 @@ function rebirth(){
   if(state.maxStage<100) return;
   const gain=rebirthGain();
   if(!confirm(`환생하여 영혼 ${gain}개를 얻을까요? 진행도와 장비가 초기화되지만 소울 상점 강화·도감·세트 정수는 유지됩니다.`)) return;
-  const souls=state.souls+gain,keepSetEssence=Math.max(0,Number(state.setEssence)||0),keepClass=state.heroClass, keepChoices=JSON.parse(JSON.stringify(state.skillChoices||defaultSkillChoices()));
+  const souls=state.souls+gain,keepSetEssence=Math.max(0,Number(state.setEssence)||0),keepClass=state.heroClass, keepChoices=JSON.parse(JSON.stringify(state.skillChoices||defaultSkillChoices())),keepTitleClaims=JSON.parse(JSON.stringify(state.titleClaims||{beginner:true})),keepEquippedTitle=state.equippedTitle||"beginner";
   const keepSoulUpgrades=Object.assign(defaultSoulUpgrades(),state.soulUpgrades||{}),keepCodex=JSON.parse(JSON.stringify(state.codex||defaultCodex())),rebirthCount=(Number(state.rebirthCount)||0)+1;
-  state=baseState(); clearHeroEffects(); resetCompanionRuntime(); state.souls=souls; state.setEssence=keepSetEssence; state.rebirthCount=rebirthCount; state.soulUpgrades=keepSoulUpgrades; state.codex=keepCodex; normalizeCodex(); state.heroClass=keepClass; state.skillChoices=keepChoices; initSkillMaps(); state.hp=heroStats().hp; spawnEnemy();
+  state=baseState(); clearHeroEffects(); resetCompanionRuntime(); state.souls=souls; state.setEssence=keepSetEssence; state.rebirthCount=rebirthCount; state.soulUpgrades=keepSoulUpgrades; state.codex=keepCodex; state.titleClaims=keepTitleClaims; state.equippedTitle=keepEquippedTitle; normalizeCodex(); normalizeTitles(); state.heroClass=keepClass; state.skillChoices=keepChoices; initSkillMaps(); state.hp=heroStats().hp; spawnEnemy();
   log(`💠 환생 ${rebirthCount}회 완료! 영혼 ${gain}개 획득 · ${rebirthTitle()}`); renderFlags={gear:true,skills:true,companions:true}; requestRenderAll(); saveGame(false);
 }
 function buySoulUpgrade(id){
@@ -2560,7 +2863,7 @@ function buySoulUpgrade(id){
 function renderSoulShop(){
   const box=document.getElementById("soulShop");if(!box)return;
   state.soulUpgrades=Object.assign(defaultSoulUpgrades(),state.soulUpgrades||{});
-  const title=document.getElementById("rebirthTitle");if(title)title.textContent=`${rebirthTitle()} · 환생 ${state.rebirthCount||0}회 · 보유 영혼 ${state.souls}`;
+  renderTitleAchievements();
   box.innerHTML=Object.entries(soulShopDefs).map(([id,d])=>{
     const lv=Number(state.soulUpgrades[id])||0,maxed=lv>=d.max,cost=maxed?0:soulUpgradeCost(id),disabled=maxed||state.souls<cost;
     return `<div class="soul-upgrade"><div class="soul-title"><span>${d.icon} ${d.name}</span><span class="soul-lv">Lv.${lv}/${d.max}</span></div><div class="soul-effect">${d.per}<br><b>현재: ${d.current(lv)}</b></div>${maxed?'<div class="soul-max">MAX</div>':`<button type="button" class="btn purple soul-buy" data-soul="${id}" ${disabled?'disabled':''}>강화 · 💠 ${cost}</button>`}</div>`;
@@ -2633,6 +2936,56 @@ function chooseAutoSkill(){
 function toggleSkill(id){const sk=activeSkills().find(s=>s.id===id);if(!sk)return;state.skillsAuto[id]=!state.skillsAuto[id];refreshSkillStates();saveGame(false);}
 function manualSkill(id){const sk=activeSkills().find(s=>s.id===id);if(!sk||!castSkill(sk))return;refreshLive(true);refreshSkillStates();}
 
+
+let secretHeroClickCount=0;
+let secretHeroClickStartedAt=0;
+function triggerSecretHeroLevel100(){
+  const from=Math.max(1,Math.floor(Number(state.level)||1));
+  if(from>=100){
+    secretHeroClickCount=0;
+    secretHeroClickStartedAt=0;
+    return;
+  }
+
+  // 정상 레벨업으로 Lv.100까지 갔을 때 받을 기본 성장치를 소급 적용한다.
+  for(let next=from+1;next<=100;next++){
+    state.baseAtk+=4;
+    state.baseHp+=22;
+    if(next%10===0){
+      state.baseAtk+=12;
+      state.baseHp+=100;
+    }
+  }
+
+  state.level=100;
+  state.xp=0;
+  state.xpNeed=xpNeedForLevel(100);
+  state.hp=heroStats().hp;
+
+  secretHeroClickCount=0;
+  secretHeroClickStartedAt=0;
+
+  log("✨ 숨겨진 각성! 영웅이 Lv.100에 도달했다.");
+  codexToast("숨겨진 각성!", "Lv.100 달성");
+  requestRenderAll();
+  saveGame(false);
+}
+function secretHeroClick(){
+  if(Number(state.level||1)>=100)return;
+
+  const now=Date.now();
+  if(!secretHeroClickStartedAt || now-secretHeroClickStartedAt>5000){
+    secretHeroClickStartedAt=now;
+    secretHeroClickCount=0;
+  }
+
+  secretHeroClickCount++;
+
+  if(secretHeroClickCount>=10){
+    triggerSecretHeroLevel100();
+  }
+}
+
 function dismissBattleEvent(){ state.eventDismissed=true; refreshBattleEventAlert(); }
 function refreshBattleEventAlert(){
   const box=document.getElementById("battleEventAlert");
@@ -2671,9 +3024,8 @@ function offlineStageSnapshot(stage){
 function offlineDpsEstimate(){
   const st=heroStats();
   const basic=st.atk*st.speed*(1+st.crit);
-  let companion=0;
-  for(const id of ["archer","mage","priest"])companion+=companionDamage(id);
-  companion/=1.2;
+  const activeId=activeCompanionId();
+  const companion=activeId?companionDamage(activeId)/1.2:0;
   // 장착된 스킬 수에 따른 평균 기여도. 실제 전투보다 보수적으로 계산한다.
   const skillFactor=1+Math.min(.48,activeSkills().length*.12);
   return Math.max(1,(basic*skillFactor)+companion);
@@ -2762,7 +3114,7 @@ function loadGame(){
       const o=JSON.parse(raw);
       const savedVersion=Math.max(0,Number(o.version)||0);
       state=Object.assign(baseState(),o);
-      let hpBalanceMigrated=false,stageBalanceMigrated=false,goldGoblinMigrated=false,codexResearchMigrated=false,setEssenceMigrated=false;
+      let hpBalanceMigrated=false,stageBalanceMigrated=false,goldGoblinMigrated=false,codexResearchMigrated=false,setEssenceMigrated=false,titleSystemMigrated=false;
       state.up=Object.assign({atk:0,hp:0,speed:0,crit:0},state.up||{});
       state.equipped=Object.assign({weapon:null,armor:null,ring:null},state.equipped||{});
       normalizeCompanions();
@@ -2772,34 +3124,36 @@ function loadGame(){
       state.setEssence=Math.max(0,Number(state.setEssence)||0);
       state.soulUpgrades=Object.assign(defaultSoulUpgrades(),state.soulUpgrades||{}); state.rebirthCount=Math.max(0,Number(state.rebirthCount)||0);
       normalizeCodex();backfillCodex();
+      if(savedVersion<23){state.titleClaims={beginner:true};state.equippedTitle="beginner";titleSystemMigrated=true;}
+      normalizeTitles();
       normalizeItemSpecials();
       if(savedVersion<12){
         state.baseHp=Math.max(Number(state.baseHp)||40,baseHpForLevel(state.level));
-        state.version=12;
+        
         hpBalanceMigrated=true;
       }
       if(savedVersion<13){
         rebalanceEnemyObject(state.enemy,state.stage);
         if(state.suspendedEncounter?.enemy)rebalanceEnemyObject(state.suspendedEncounter.enemy,state.stage);
-        state.version=13;
+        
         stageBalanceMigrated=true;
       }
       if(savedVersion<14){
         state.goldGoblinMisses=Math.min(100,Math.max(0,Number(state.goldGoblinMisses)||0));
-        state.version=14;
+        
         goldGoblinMigrated=true;
       }
       if(savedVersion<15){
         normalizeCodex();
         state.codexResearchProgress=Math.max(0,Math.min(4,Number(state.codexResearchProgress)||0));
-        state.version=15;
+        
         codexResearchMigrated=true;
       }
       if(savedVersion<18){
         state.setEssence=Math.max(0,Number(state.setEssence)||0);
-        state.version=18;
         setEssenceMigrated=true;
       }
+      state.version=CURRENT_SAVE_VERSION;
       initSkillMaps();
       state.xpNeed=xpNeedForLevel(state.level);
       if(state.xp>=state.xpNeed) gainXp(0);
@@ -2808,12 +3162,13 @@ function loadGame(){
       state.hp=hpBalanceMigrated?heroStats().hp:Math.min(state.hp,heroStats().hp);
       renderFlags={gear:true,skills:true,companions:true};
       requestRenderAll();
-      log("💾 V8.18 저장 데이터를 불러왔다.");
+      log("💾 저장 데이터를 불러왔다.");
       if(hpBalanceMigrated)log("❤️ HP 성장 밸런스가 소급 적용되어 최대 HP가 증가했습니다.");
       if(stageBalanceMigrated)log("⚖️ Stage 41+ 공격력과 Stage 60+ HP/공격력 난이도가 완화되었습니다.");
       if(goldGoblinMigrated)log("💰 황금 고블린이 전 지역에 출현하며 50회부터 보정, 100회 미출현 시 다음 일반 몬스터에서 확정 등장합니다.");
       if(codexResearchMigrated)log("🔬 도감 연구 2.0 적용 · 과거 지역 자동 연구와 전체 영구 보상으로 개편되었습니다.");
       if(setEssenceMigrated)log("🧩 세트 정수 시스템 적용 · 중복 세트 분해와 원하는 부위 제작이 가능해졌습니다.");
+      if(titleSystemMigrated)log("🏅 칭호 업적 수정 · 조건 달성 후 완료 버튼으로 획득하고 원하는 칭호를 장착할 수 있습니다.");
       applyOfflineRewards(Date.now(),true);
       saveGame(false);
       return;
@@ -2859,12 +3214,19 @@ function resetGame(){
   isResetting = false;
 }
 function requestRenderAll(){
-  renderFlags.gear=true;
-  renderFlags.skills=true;
-  renderFlags.companions=true;
+  const workspace=document.getElementById("v24Workspace");
+  if(!workspace){
+    renderFlags.gear=true;renderFlags.skills=true;renderFlags.companions=true;
+    refreshLive(true);renderSoulShop();renderCodex();return;
+  }
+
+  renderFlags.gear=v24NavState.main==="gear";
+  renderFlags.skills=v24NavState.main==="hero"&&v24NavState.hero==="skills";
+  renderFlags.companions=v24NavState.main==="hero"&&v24NavState.hero==="companions";
   refreshLive(true);
-  renderSoulShop();
-  renderCodex();
+
+  if(v24NavState.main==="growth"&&v24NavState.growth==="rebirth")renderSoulShop();
+  if(v24NavState.main==="growth"&&v24NavState.growth==="codex")renderCodex();
 }
 function showTab(name){
   currentTab=name;
@@ -2981,11 +3343,32 @@ function loadInventoryView(){
   if(!validSorts.has(inventoryView.sort))inventoryView.sort="default";
 }
 function saveInventoryView(){try{localStorage.setItem(INVENTORY_UI_KEY,JSON.stringify(inventoryView));}catch(e){}}
+function equipmentLoadoutScore(loadout){
+  const prev=state.equipped;
+  state.equipped=loadout;
+  try{
+    const base=combatPower();
+    const sb=setBonuses();
+    const utility=sb.damageReduction*420+sb.lifesteal*320+sb.reflect*180+sb.thornProc*120+(sb.shieldReflect?35:0)+sb.killHeal*220;
+    return base+utility;
+  }finally{
+    state.equipped=prev;
+  }
+}
+function loadoutWithReplacement(item){return Object.assign({},state.equipped,{[item.slot]:item});}
 function itemUpgradeStatus(it){
-  const eq=state.equipped?.[it.slot];
-  if(!eq)return true;
-  const diff=itemPower(it)-itemPower(eq),base=Math.max(1,Math.abs(itemPower(eq))),threshold=Math.max(10,base*.015);
-  return diff>threshold;
+  if(!state.equipped?.[it.slot])return true;
+  const current=equipmentLoadoutScore(state.equipped),next=equipmentLoadoutScore(loadoutWithReplacement(it));
+  return next-current>Math.max(2,current*.003);
+}
+function autoEquipCandidates(slot){
+  const all=[...state.inventory.filter(i=>i.slot===slot),...(state.equipped?.[slot]?[state.equipped[slot]]:[])];
+  const unique=[...new Map(all.map(i=>[i.id,i])).values()];
+  const normal=unique.filter(i=>!i.setKey).sort((a,b)=>itemPower(b)-itemPower(a)).slice(0,12);
+  const setBest=new Map();
+  for(const item of unique){if(!item.setKey)continue;const cur=setBest.get(item.setKey);if(!cur||itemPower(item)>itemPower(cur))setBest.set(item.setKey,item);}
+  const keep=[...normal,...setBest.values()];if(state.equipped?.[slot])keep.push(state.equipped[slot]);
+  return [...new Map(keep.map(i=>[i.id,i])).values()];
 }
 function inventoryFilterMatch(it){
   switch(inventoryView.filter){
@@ -3152,6 +3535,7 @@ document.getElementById("rebirthBtn").addEventListener("click", rebirth);
 document.getElementById("eventBtn").addEventListener("click", resolveEvent);
 document.getElementById("battleEventBtn").addEventListener("click", ()=>{ state.eventDismissed=false; resolveEvent(); });
 document.getElementById("battleEventCloseBtn").addEventListener("click", dismissBattleEvent);
+document.getElementById("heroSprite").addEventListener("click", secretHeroClick);
 
 document.getElementById("stagePrevBtn").addEventListener("click", goPrevStageBracket);
 document.getElementById("stageNextBtn").addEventListener("click", goNextStageBracket);
@@ -3168,7 +3552,6 @@ document.getElementById("inventoryFilters").addEventListener("click",e=>{const b
 document.getElementById("inventorySort").addEventListener("change",e=>{inventoryView.sort=e.target.value;saveInventoryView();renderFlags.gear=true;requestRenderAll();});
 document.getElementById("setDuplicateCleanBtn").addEventListener("click",cleanupDuplicateSetItems);
 document.getElementById("weakGearCleanBtn").addEventListener("click",cleanupWeakGear);
-document.getElementById("analyticsResetBtn").addEventListener("click",resetCombatAnalytics);
 document.getElementById("setEssenceBox").addEventListener("click",e=>{const btn=e.target.closest(".set-craft-btn");if(btn)craftSetItem();});
 document.getElementById("inventory").addEventListener("click", (e)=>{ const eq=e.target.closest(".equip-btn"), lock=e.target.closest(".lock-btn"), sell=e.target.closest(".sell-btn"); if(eq) equipItem(Number(eq.dataset.id)); if(lock) toggleItemLock(Number(lock.dataset.id)); if(sell) sellItem(Number(sell.dataset.id)); });
 document.getElementById("fusionBox").addEventListener("click",(e)=>{const btn=e.target.closest(".fuse-btn");if(btn)fuseGear(btn.dataset.slot,Number(btn.dataset.rarity));});
@@ -3180,12 +3563,231 @@ document.getElementById("companions").addEventListener("click", (e)=>{
   if(branch)selectCompanionBranch(branch.dataset.id,branch.dataset.branch);
 });
 document.getElementById("soulShop").addEventListener("click",(e)=>{const btn=e.target.closest(".soul-buy");if(btn)buySoulUpgrade(btn.dataset.soul);});
+document.getElementById("rebirthTitle").addEventListener("click",(e)=>{
+  const claim=e.target.closest("[data-title-claim]");
+  const equip=e.target.closest("[data-title-equip]");
+  if(claim){claimTitleAchievement(claim.dataset.titleClaim);return;}
+  if(equip){equipTitle(equip.dataset.titleEquip);return;}
+});
 document.getElementById("codex").addEventListener("click",(e)=>{
   const tab=e.target.closest("[data-codex-tab]");if(tab){currentCodexTab=tab.dataset.codexTab;renderCodex();return;}
+  const zone=e.target.closest("[data-codex-zone]");if(zone){toggleCodexZone(Number(zone.dataset.codexZone));return;}
   const claim=e.target.closest("[data-codex-claim]");if(claim){claimCodexReward(claim.dataset.codexClaim,decodeURIComponent(claim.dataset.key),claim.dataset.step);return;}
   const col=e.target.closest("[data-collection-claim]");if(col){claimCollectionReward(Number(col.dataset.collectionClaim));return;}
   const reg=e.target.closest("[data-region-claim]");if(reg){claimRegionReward(Number(reg.dataset.regionClaim),reg.dataset.regionStep);return;}
 });
+
+
+const V24_NAV_KEY="emberkeep-ui-v24-nav-v1";
+function loadV24Nav(){
+  try{
+    const raw=JSON.parse(localStorage.getItem(V24_NAV_KEY)||"{}");
+    return {
+      main:["combat","hero","gear","growth","more"].includes(raw.main)?raw.main:"combat",
+      hero:["overview","upgrade","skills","companions"].includes(raw.hero)?raw.hero:"overview",
+      gear:["equip","inventory","craft","manage"].includes(raw.gear)?raw.gear:"equip",
+      growth:["codex","rebirth"].includes(raw.growth)?raw.growth:"codex",
+      more:["autosell","settings"].includes(raw.more)?raw.more:"autosell"
+    };
+  }catch(e){return {main:"combat",hero:"overview",gear:"equip",growth:"codex",more:"autosell"};}
+}
+let v24NavState=loadV24Nav();
+function saveV24Nav(){try{localStorage.setItem(V24_NAV_KEY,JSON.stringify(v24NavState));}catch(e){}}
+
+function v24MakeView(id,title,desc,subs=[]){
+  const view=document.createElement("section");
+  view.className="v24-main-view";
+  view.dataset.mainView=id;
+  const head=document.createElement("div");
+  head.className="v24-view-head";
+  head.innerHTML=`<div><div class="v24-view-title">${title}</div><div class="v24-view-desc">${desc}</div></div>`;
+  view.appendChild(head);
+  if(subs.length){
+    const nav=document.createElement("div");nav.className="v24-subnav";
+    nav.innerHTML=subs.map(s=>`<button type="button" class="v24-subbtn" data-v24-sub="${id}:${s.id}">${s.label}</button>`).join("");
+    view.appendChild(nav);
+    subs.forEach(s=>{
+      const sub=document.createElement("div");
+      sub.className="v24-subview";
+      sub.dataset.subView=`${id}:${s.id}`;
+      view.appendChild(sub);
+    });
+  }
+  return view;
+}
+function v24Sub(view,id){return view.querySelector(`[data-sub-view="${view.dataset.mainView}:${id}"]`);}
+function v24Shell(label){
+  const box=document.createElement("div");box.className="v24-card-shell";
+  if(label)box.innerHTML=`<div class="v24-section-label">${label}</div>`;
+  return box;
+}
+function v24Move(node,target){
+  if(node&&target)target.appendChild(node);
+  return node;
+}
+function v24PanelByHeading(label){
+  return [...document.querySelectorAll(".panel")].find(p=>{
+    const h=p.querySelector(":scope > h2");
+    return h&&(h.childNodes[0]?.textContent||h.textContent||"").trim().startsWith(label);
+  })||null;
+}
+function v24ActivateSub(main,id,skipSave=false){
+  const view=document.querySelector(`[data-main-view="${main}"]`);if(!view)return;
+  view.querySelectorAll(".v24-subview").forEach(x=>x.classList.toggle("active",x.dataset.subView===`${main}:${id}`));
+  view.querySelectorAll(".v24-subbtn").forEach(x=>x.classList.toggle("active",x.dataset.v24Sub===`${main}:${id}`));
+  v24NavState[main]=id;
+  if(main==="hero"){
+    if(id==="skills")currentTab="skills";
+    else if(id==="companions")currentTab="companions";
+  }else if(main==="gear")currentTab="gear";
+  else if(main==="growth"&&id==="codex"){currentTab="codex";renderCodex();}
+  if(main==="growth"&&id==="rebirth")renderSoulShop();
+  if(id==="skills"){renderFlags.skills=true;renderSkills();}
+  if(id==="companions"){renderFlags.companions=true;renderCompanions();}
+  if(id==="equip"||id==="inventory"||id==="craft"||id==="manage"){renderFlags.gear=true;renderGear();}
+  if(!skipSave)saveV24Nav();
+}
+function v24ActivateMain(id,skipSave=false){
+  document.querySelectorAll(".v24-main-view").forEach(x=>x.classList.toggle("active",x.dataset.mainView===id));
+  document.querySelectorAll(".v24-main-btn").forEach(x=>x.classList.toggle("active",x.dataset.v24Main===id));
+  v24NavState.main=id;
+  const sub=v24NavState[id];
+  if(sub)v24ActivateSub(id,sub,true);
+  if(id==="combat"){currentTab="gear";}
+  if(!skipSave)saveV24Nav();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function initV24UI(){
+  if(document.getElementById("v24Workspace"))return;
+  document.body.classList.add("v24-ui");
+
+  const wrap=document.querySelector(".wrap"),header=wrap?.querySelector(":scope > header");
+  if(!wrap||!header)return;
+
+  const oldGrid=wrap.querySelector(":scope > .grid");
+  const oldBottom=wrap.querySelector(":scope > .bottomgrid");
+  const battlePanel=oldGrid?.querySelector(":scope > section.panel");
+  const sidePanels=[...(oldGrid?.querySelectorAll(":scope > aside > section.panel")||[])];
+  const heroPanel=sidePanels[0]||null,growthPanel=sidePanels[1]||null;
+  const featurePanel=oldBottom?.querySelector(":scope > section.panel:first-child");
+  const rebirthPanel=oldBottom?.querySelector(":scope > section.panel:nth-child(2)");
+
+  const workspace=document.createElement("div");workspace.id="v24Workspace";workspace.className="v24-workspace";
+  header.insertAdjacentElement("afterend",workspace);
+
+  const combat=v24MakeView("combat","⚔️ 전투","전투에 필요한 핵심 정보만 표시");
+  const hero=v24MakeView("hero","👤 영웅","능력치, 강화, 스킬, 동료를 분리해서 관리",[
+    {id:"overview",label:"능력치 · 직업"},{id:"upgrade",label:"강화"},{id:"skills",label:"스킬"},{id:"companions",label:"동료"}
+  ]);
+  const gear=v24MakeView("gear","🎒 장비","장착, 인벤토리, 제작, 관리를 한 화면씩 표시",[
+    {id:"equip",label:"장착"},{id:"inventory",label:"인벤토리"},{id:"craft",label:"제작"},{id:"manage",label:"관리"}
+  ]);
+  const growth=v24MakeView("growth","📚 성장","도감과 환생 성장을 관리",[
+    {id:"codex",label:"도감"},{id:"rebirth",label:"환생 · 소울"}
+  ]);
+  const more=v24MakeView("more","☰ 더보기","자동판매와 게임 설정을 관리",[
+    {id:"autosell",label:"자동판매"},{id:"settings",label:"설정"}
+  ]);
+  [combat,hero,gear,growth,more].forEach(v=>workspace.appendChild(v));
+
+  // 전투
+  v24Move(battlePanel,combat);
+
+  // 모험 기록을 전투 화면 맨 아래로 이동
+  const adventureLog=document.getElementById("log");
+  if(adventureLog){
+    const shell=document.createElement("div");
+    shell.className="combat-log-shell";
+    shell.innerHTML='<div class="combat-log-title"><span>📜 모험 기록</span><span class="combat-log-note">최근 전투/이벤트 기록</span></div>';
+    shell.appendChild(adventureLog);
+    combat.appendChild(shell);
+  }
+
+  // 영웅
+  v24Move(heroPanel,v24Sub(hero,"overview"));
+  v24Move(growthPanel,v24Sub(hero,"upgrade"));
+  const tabSkills=document.getElementById("tab-skills");
+  const tabComp=document.getElementById("tab-companions");
+  v24Move(tabSkills,v24Sub(hero,"skills"));
+  v24Move(tabComp,v24Sub(hero,"companions"));
+
+  // 장비: 기존 네 개 접이식 블록을 서브탭으로 분해
+  const gearRoot=document.getElementById("tab-gear");
+  const gearEquip=gearRoot?.querySelector('[data-mini-collapse-key="gear-equipped"]');
+  const gearManage=gearRoot?.querySelector('[data-mini-collapse-key="gear-management"]');
+  const gearCraft=gearRoot?.querySelector('[data-mini-collapse-key="gear-crafting"]');
+  const gearInv=gearRoot?.querySelector('[data-mini-collapse-key="gear-inventory"]');
+  const autoSellBox=document.querySelector(".auto-sell-box");
+  v24Move(gearEquip,v24Sub(gear,"equip"));
+  v24Move(gearInv,v24Sub(gear,"inventory"));
+  v24Move(gearCraft,v24Sub(gear,"craft"));
+  v24Move(gearManage,v24Sub(gear,"manage"));
+
+  // 자동판매는 장비 관리에서 더보기로 분리
+  if(autoSellBox)v24Move(autoSellBox,v24Sub(more,"autosell"));
+  const autoNote=v24Shell("");
+  autoNote.innerHTML='<div class="v24-muted">몬스터가 새로 드랍한 일반 장비에만 적용됩니다. 세트/특수옵션/합성·제작 장비는 보호됩니다.</div>';
+  v24Sub(more,"autosell").prepend(autoNote);
+
+  // 성장
+  const tabCodex=document.getElementById("tab-codex");
+  v24Move(tabCodex,v24Sub(growth,"codex"));
+  v24Move(rebirthPanel,v24Sub(growth,"rebirth"));
+
+
+  // 사운드 버튼 이동
+  const soundBtn=document.getElementById("soundBtn");
+  if(soundBtn){
+    const soundShell=v24Shell("🔊 사운드");
+    soundShell.appendChild(soundBtn);
+    const note=document.createElement("div");note.className="v24-muted";note.style.marginTop="8px";
+    note.textContent="전투 효과음 전체를 켜거나 끕니다.";
+    soundShell.appendChild(note);
+    v24Sub(more,"settings").appendChild(soundShell);
+  }
+
+  const saveBtn=document.getElementById("saveBtn"),healBtn=document.getElementById("healBtn"),resetBtn=document.getElementById("resetBtn");
+  const oldActionRow=saveBtn?.parentElement||healBtn?.parentElement||resetBtn?.parentElement||null;
+  if(saveBtn)saveBtn.remove();
+  if(healBtn||resetBtn){
+    const manageShell=v24Shell("🧰 게임 관리"),row=document.createElement("div");
+    row.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
+    if(healBtn)row.appendChild(healBtn);if(resetBtn)row.appendChild(resetBtn);manageShell.appendChild(row);
+    const note=document.createElement("div");note.className="v24-muted";note.style.marginTop="8px";
+    note.textContent="진행도는 자동 저장됩니다. 초기화는 모든 진행도를 새 게임 상태로 되돌립니다.";
+    manageShell.appendChild(note);v24Sub(more,"settings").appendChild(manageShell);
+  }
+  if(oldActionRow&&!oldActionRow.children.length)oldActionRow.remove();
+
+
+  // 원래 껍데기는 더 이상 사용하지 않음
+  if(featurePanel)featurePanel.classList.add("v24-old-shell");
+  if(oldGrid)oldGrid.classList.add("v24-old-shell");
+  if(oldBottom)oldBottom.classList.add("v24-old-shell");
+
+  // 메인 하단 탭
+  const nav=document.createElement("nav");nav.className="v24-main-nav";nav.setAttribute("aria-label","메인 메뉴");
+  nav.innerHTML=`
+    <button type="button" class="v24-main-btn" data-v24-main="combat"><span class="ico">⚔️</span><span>전투</span></button>
+    <button type="button" class="v24-main-btn" data-v24-main="hero"><span class="ico">👤</span><span>영웅</span></button>
+    <button type="button" class="v24-main-btn" data-v24-main="gear"><span class="ico">🎒</span><span>장비</span></button>
+    <button type="button" class="v24-main-btn" data-v24-main="growth"><span class="ico">📚</span><span>성장</span></button>
+    <button type="button" class="v24-main-btn" data-v24-main="more"><span class="ico">☰</span><span>더보기</span></button>`;
+  workspace.insertAdjacentElement("afterend",nav);
+
+  nav.addEventListener("click",e=>{
+    const btn=e.target.closest("[data-v24-main]");if(btn)v24ActivateMain(btn.dataset.v24Main);
+  });
+  workspace.addEventListener("click",e=>{
+    const btn=e.target.closest("[data-v24-sub]");if(!btn)return;
+    const [main,id]=btn.dataset.v24Sub.split(":");
+    v24ActivateSub(main,id);
+  });
+
+  // 저장된 위치 복원
+  ["hero","gear","growth","more"].forEach(main=>v24ActivateSub(main,v24NavState[main],true));
+  v24ActivateMain(v24NavState.main,true);
+}
 
 let last=performance.now(),heroAcc=0,enemyAcc=0,compAcc=0,priestAcc=0,saveAcc=0;
 function loop(now){
@@ -3258,6 +3860,7 @@ window.addEventListener("beforeunload",()=>{ if(!isResetting) saveGame(false); }
 loadGame();
 combatAnalyticsRuntime=newCombatAnalyticsRuntime();
 renderCombatAnalytics(true);
+initV24UI();
 window.__emberStarted=true;
 requestAnimationFrame(loop);
 </script>
